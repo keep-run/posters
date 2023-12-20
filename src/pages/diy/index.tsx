@@ -2,6 +2,7 @@
 import '@/common/common.less'
 import './index.less'
 import { useEffect, useRef, useState } from 'react';
+import html2canvas from 'html2canvas'
 import Img1 from '@/assets/compontsImg/component-1.jpeg'
 import Img2 from '@/assets/compontsImg/component-2.jpeg'
 import Img3 from '@/assets/compontsImg/component-3.jpeg'
@@ -20,9 +21,9 @@ export default function DIY() {
   ])
   const zIndex = useRef(10)
   const dropRef = useRef(null)
+  const previewRef = useRef(null)
 
   const onDragStart = (event: any) => {
-    console.log('---wzc--onDragStart---', event)
 
   }
   const onDrop = (event: any) => {
@@ -34,32 +35,55 @@ export default function DIY() {
   }
 
   const reset = () => {
-    setFlag(flag + 1)
+    html2canvas(dropRef.current).then(canvas=>{
+      previewRef.current.src = canvas.toDataURL("image/png");
+    })
   }
 
-  const onTouchEndCb = () => {
+  const onTouchEndCb = (data: any) => {
+    const newImgs = imgs.map(img => {
+      if (data.id === img.id) {
+        return { ...img, ...data }
+      } else {
+        return img
+      }
+    })
+    setImgs(newImgs)
     zIndex.current = zIndex.current + 1
   }
   return (
     <div className='diy-container'>
       <div onClick={reset}>重置{flag}</div>
       <div className='content' ref={dropRef} id='droppable'>
-
-      </div>
-      <div draggable onTouchStart={onDragStart}>test</div>
-      <div className='footer-container'>
-        {imgs.filter(img => img.isFooter).map(item => (
-          <DragItem 
-          imgInfo={item} 
-          getzIndex={() => zIndex.current}
-           onTouchEndCb={onTouchEndCb} 
-           dropContainer = {dropRef.current}
-           droppableId = 'droppable'
-           />
+        {imgs.filter(img => !img.isFooter).map(item => (
+          <DragItem
+            key={`droppable-${item.id}`}
+            imgInfo={item}
+            getzIndex={() => zIndex.current}
+            onTouchEndCb={onTouchEndCb}
+            dropContainer={dropRef.current}
+            droppableId='droppable'
+          />
           // <div id={item.id} draggable onDragStart={onDragStart}>  ----------{item.id}--------</div>
           // <img src={item.url} alt="" className='img-small' id={item.id} draggable onDragStart={onDragStart} />
         ))}
       </div>
+      <div draggable onTouchStart={onDragStart}>test</div>
+      <div className='footer-container'>
+        {imgs.filter(img => img.isFooter).map(item => (
+          <DragItem
+            key={`footer-${item.id}`}
+            imgInfo={item}
+            getzIndex={() => zIndex.current}
+            onTouchEndCb={onTouchEndCb}
+            dropContainer={dropRef.current}
+            droppableId='droppable'
+          />
+          // <div id={item.id} draggable onDragStart={onDragStart}>  ----------{item.id}--------</div>
+          // <img src={item.url} alt="" className='img-small' id={item.id} draggable onDragStart={onDragStart} />
+        ))}
+      </div>
+      <img src='' alt="Preview"  ref={previewRef} />;
     </div>
   );
 }

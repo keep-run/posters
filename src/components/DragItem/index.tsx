@@ -1,22 +1,32 @@
 import { useEffect, useRef } from "react"
 import './index.less'
+
+
 const DragItem = ({
   onTouchEndCb,
   imgInfo,
   getzIndex,
   droppableId
-}) => {
+}: any) => {
 
- const droppable = useRef<HTMLElement>()
+  const droppable = useRef<any>(null)
 
- useEffect(()=>{
-  droppable.current = document.getElementById(droppableId)
- },[droppableId])
+  useEffect(() => {
+    droppable.current = document.getElementById(droppableId)
+  }, [droppableId])
   const offset = useRef({
     offsetX: 0,
     offsetY: 0,
   })
   const targetRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (!imgInfo.isFooter && imgInfo.style) {
+      targetRef.current.style.left = imgInfo.style.left
+      targetRef.current.style.top = imgInfo.style.top
+      targetRef.current.style.position = imgInfo.style.position
+    }
+  }, [imgInfo, targetRef])
 
 
   const onTouchStart = (e: any) => {
@@ -26,20 +36,11 @@ const DragItem = ({
     offset.current = { offsetX, offsetY }
   }
 
-  const onTouchMove = (e: TouchEvent) => {
+  const onTouchMove = (e: any) => {
     e.stopPropagation();
     const touch = e.touches[0];
     const x = touch.clientX - offset.current.offsetX;
     let y = touch.clientY - offset.current.offsetY;
-    // const draggable = document.getElementById('draggable');
-    const rect = droppable.current?.getBoundingClientRect();
-
-    console.log('---wzc-----touch---------', touch)
-    // 
-    if (y < rect.bottom && y + touch.target.height > rect.bottom) {
-         y =  rect.bottom - touch.target.height 
-    }
-
 
     targetRef.current.style.left = `${x}px`
     targetRef.current.style.top = `${y}px`
@@ -48,28 +49,57 @@ const DragItem = ({
   }
 
 
-  const onTouchEnd = (e: TouchEvent) => {
-    e.stopPropagation();
+  const onTouchEnd = (event: any) => {
+    event.stopPropagation();
 
-    // 判断是否进入可放置区域
-    // var draggable = document.getElementById('draggable');
-    const rect = droppable.current?.getBoundingClientRect?.()||{};
-    var draggableRect = targetRef.current.getBoundingClientRect();
-    if (
-      draggableRect.left >= rect.left &&
-      draggableRect.right <= rect.right &&
-      draggableRect.top >= rect.top &&
-      draggableRect.bottom <= rect.bottom
-    ) {
-      // 完全处于放置区
-      // draggable.classList.add('hover');
-    } else {
-      // 不在可放置区域，就退回去
+
+    const targetRect = targetRef.current.getBoundingClientRect();
+    const droppableRect = droppable.current?.getBoundingClientRect?.() || {};
+
+    // 完全不在放置区的时候，认为是不要了，回到原来的地方
+    if (targetRect.right < droppableRect.left || targetRect.left > droppableRect.right || targetRect.bottom < droppableRect.top || targetRect.top > droppableRect.bottom) {
       targetRef.current.style.position = ''
-      // draggable.classList.remove('hover');
+      onTouchEndCb({
+        style: {
+          top: 0,
+          left: 0,
+          position: '',
+        },
+        isFooter: true,
+        id: imgInfo.id
+      })
+      return
     }
 
-    onTouchEndCb()
+    // 横跨左边缘
+    if (targetRect.left < droppableRect.left) {
+      targetRef.current.style.left = `0px`
+    }
+
+    // 横跨右边缘
+    if (targetRect.right > droppableRect.right) {
+      targetRef.current.style.left = `${droppableRect.right - event.target.width}px`
+    }
+
+    // 横跨上边缘
+    if (targetRect.top < droppableRect.top) {
+      targetRef.current.style.top = `0px`
+    }
+
+    // 横跨下边缘边缘
+    if (targetRect.bottom > droppableRect.bottom) {
+      targetRef.current.style.top = `${droppableRect.bottom - event.target.height}px`
+    }
+
+    onTouchEndCb({
+      style: {
+        top: targetRef.current.style.top,
+        left: targetRef.current.style.left,
+        position: 'absolute',
+      },
+      isFooter: false,
+      id: imgInfo.id
+    })
   }
   return (
     <img src={imgInfo.url}

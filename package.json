@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "umi": "^4.0.89"
   },
   "devDependencies": {
