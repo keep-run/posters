@@ -1,89 +1,172 @@
+import Img1 from "@/assets/compontsImg/component-1.jpeg";
+import Img2 from "@/assets/compontsImg/component-2.jpeg";
+import Img3 from "@/assets/compontsImg/component-3.jpeg";
+import Img4 from "@/assets/compontsImg/component-4.jpeg";
+import Img5 from "@/assets/compontsImg/component-5.jpeg";
+import "@/common/common.less";
+import ReactIf from "@/utils/ReactIf";
+import classNames from "classnames";
+import html2canvas from "html2canvas";
+import { useEffect, useRef, useState } from "react";
+import "./index.less";
 
-import '@/common/common.less'
-import './index.less'
-import { useEffect, useRef, useState } from 'react';
-import html2canvas from 'html2canvas'
-import Img1 from '@/assets/compontsImg/component-1.jpeg'
-import Img2 from '@/assets/compontsImg/component-2.jpeg'
-import Img3 from '@/assets/compontsImg/component-3.jpeg'
-import Img4 from '@/assets/compontsImg/component-4.jpeg'
-import Img5 from '@/assets/compontsImg/component-5.jpeg'
-const FOOTER_IMGS = [Img1, Img2, Img3, Img4, Img5]
-import DragItem from '@/components/DragItem';
+import Bg1 from "@/assets/mainImg/bg1.jpg";
+import Bg2 from "@/assets/mainImg/bg2.jpg";
+import Bg3 from "@/assets/mainImg/bg3.jpg";
+
+const BG_IMGS = [Bg1, Bg2, Bg3];
+const TEMPLATE_IMGS = [Bg1, Bg2, Bg3];
+
+const INIT_IMGS = [
+  { id: "1", url: Img1, isFooter: true },
+  { id: "2", url: Img2, isFooter: true },
+  { id: "3", url: Img3, isFooter: true },
+  { id: "4", url: Img4, isFooter: true },
+  { id: "5", url: Img5, isFooter: true },
+];
+
+import DragItem from "@/components/DragItem";
 export default function DIY() {
-  const [flag, setFlag] = useState(1)
-  const [imgs, setImgs] = useState([
-    { id: '1', url: Img1, isFooter: true },
-    { id: '2', url: Img2, isFooter: true },
-    { id: '3', url: Img3, isFooter: true },
-    { id: '4', url: Img4, isFooter: true },
-    { id: '5', url: Img5, isFooter: true }
-  ])
-  const zIndex = useRef(10)
-  const dropRef = useRef(null)
-  const previewRef = useRef(null)
+  const [flag, setFlag] = useState(1);
+  const [bg, setBg] = useState(BG_IMGS[0]);
+  const [templateImg, setTemplateImg] = useState(TEMPLATE_IMGS[0]);
+  const [isPreview, setIsPreview] = useState(false);
+  const [mode, setMode] = useState("diy");
+  const [imgs, setImgs] = useState(INIT_IMGS);
+  const zIndex = useRef(10);
+  const dropRef = useRef(null);
+  const previewRef = useRef(null);
 
-  const onDragStart = (event: any) => {
+  useEffect(() => {
+    // 随机选一个背景图
+    setBg(BG_IMGS[Math.floor(Math.random() * BG_IMGS.length)]);
+  }, []);
 
-  }
-  const onDrop = (event: any) => {
-
-  }
+  const onDragStart = (event: any) => {};
+  const onDrop = (event: any) => {};
 
   const allowDrop = (event: any) => {
     event.preventDefault();
-  }
+  };
 
-  const reset = () => {
-    html2canvas(dropRef.current).then(canvas=>{
+  const onNext = () => {
+    html2canvas(dropRef.current).then((canvas) => {
       previewRef.current.src = canvas.toDataURL("image/png");
-    })
-  }
+      setIsPreview(true);
+    });
+  };
 
   const onTouchEndCb = (data: any) => {
-    const newImgs = imgs.map(img => {
+    const newImgs = imgs.map((img) => {
       if (data.id === img.id) {
-        return { ...img, ...data }
+        return { ...img, ...data };
       } else {
-        return img
+        return img;
       }
-    })
-    setImgs(newImgs)
-    zIndex.current = zIndex.current + 1
-  }
+    });
+    setImgs(newImgs);
+    zIndex.current = zIndex.current + 1;
+  };
+
+  const onReset = () => {
+    setIsPreview(false);
+    setImgs(INIT_IMGS);
+    setMode("diy");
+  };
   return (
-    <div className='diy-container'>
-      <div onClick={reset}>重置{flag}</div>
-      <div className='content' ref={dropRef} id='droppable'>
-        {imgs.filter(img => !img.isFooter).map(item => (
-          <DragItem
-            key={`droppable-${item.id}`}
-            imgInfo={item}
-            getzIndex={() => zIndex.current}
-            onTouchEndCb={onTouchEndCb}
-            dropContainer={dropRef.current}
-            droppableId='droppable'
-          />
-          // <div id={item.id} draggable onDragStart={onDragStart}>  ----------{item.id}--------</div>
-          // <img src={item.url} alt="" className='img-small' id={item.id} draggable onDragStart={onDragStart} />
-        ))}
+    <div className="diy-container">
+      <div className="header">
+        <div className="action" onClick={onReset}>
+          重置
+        </div>
+        <ReactIf condition={!isPreview}>
+          <div onClick={onNext} className="action">
+            下一步
+          </div>
+        </ReactIf>
       </div>
-      <div draggable onTouchStart={onDragStart}>test</div>
-      <div className='footer-container'>
-        {imgs.filter(img => img.isFooter).map(item => (
-          <DragItem
-            key={`footer-${item.id}`}
-            imgInfo={item}
-            getzIndex={() => zIndex.current}
-            onTouchEndCb={onTouchEndCb}
-            dropContainer={dropRef.current}
-            droppableId='droppable'
-          />
-          // <div id={item.id} draggable onDragStart={onDragStart}>  ----------{item.id}--------</div>
-          // <img src={item.url} alt="" className='img-small' id={item.id} draggable onDragStart={onDragStart} />
-        ))}
+
+      <div
+        className="content"
+        ref={dropRef}
+        id="droppable"
+        style={{
+          backgroundImage: `url(${mode === "diy" ? bg : templateImg})`,
+        }}
+      >
+        <img
+          src="null"
+          alt="Preview"
+          ref={previewRef}
+          className="preview"
+          style={{
+            zIndex: zIndex.current,
+            display: isPreview ? "flex" : "none",
+          }}
+        />
+
+        <ReactIf condition={mode === "diy"}>
+          {imgs
+            .filter((img) => !img.isFooter)
+            .map((item) => (
+              <DragItem
+                key={`droppable-${item.id}`}
+                imgInfo={item}
+                getzIndex={() => zIndex.current}
+                onTouchEndCb={onTouchEndCb}
+                dropContainer={dropRef.current}
+                droppableId="droppable"
+              />
+            ))}
+        </ReactIf>
       </div>
-      <img src='' alt="Preview"  ref={previewRef} />;
+      <div className="footer-container">
+        <div className="mode-select">
+          <div
+            className={classNames("mode-item", {
+              "active-mode": mode === "diy",
+            })}
+            onClick={() => setMode("diy")}
+          >
+            自定义DIY
+          </div>
+          <div className="divider" />
+          <div
+            className={classNames("mode-item", {
+              "active-mode": mode === "template",
+            })}
+            onClick={() => setMode("template")}
+          >
+            场景模板
+          </div>
+        </div>
+        <div className="footer-imgs">
+          <ReactIf condition={mode === "diy"}>
+            {imgs
+              .filter((img) => img.isFooter)
+              .map((item) => (
+                <DragItem
+                  key={`footer-${item.id}`}
+                  imgInfo={item}
+                  getzIndex={() => zIndex.current}
+                  onTouchEndCb={onTouchEndCb}
+                  dropContainer={dropRef.current}
+                  droppableId="droppable"
+                />
+              ))}
+          </ReactIf>
+          <ReactIf condition={mode === "template"}>
+            {TEMPLATE_IMGS.map((item, index) => (
+              <img
+                key={index}
+                src={item}
+                className="template-img"
+                onClick={() => setTemplateImg(item)}
+              />
+            ))}
+          </ReactIf>
+        </div>
+      </div>
     </div>
   );
 }

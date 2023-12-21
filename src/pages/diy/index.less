@@ -1,23 +1,77 @@
 .diy-container {
+  box-sizing: border-box;
   height: 100%;
   display: flex;
-  background-color: bisque;
+  background-color: darkred;
   flex-direction: column;
   overflow: hidden;
-  
+  padding: 15px 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .action {
+    border: 2px solid gold;
+    border-radius: 6px;
+    text-align: center;
+    width: 60px;
+    padding: 3px 0;
+    color: gold;
+  }
 
   .content {
     flex-grow: 1;
+    flex-shrink: 1;
+    background-size: cover;
+    position: relative;
+  }
+
+  .mode-select {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .divider {
+    width: 2px;
+    margin: 8px 8px;
+    background-color: #ccc;
+  }
+
+  .mode-item {
+    color: #ccc;
+    margin: 4px 0;
+  }
+
+  .active-mode {
+    color: gold;
+  }
+  
+  .footer-imgs {
+    // height: 160px;
+    border: 1px solid #ccc;
+    display: flex;
+    overflow: scroll;
+    column-gap: 5px;
+  }
+
+  .template-img {
+    width: 80px;
+    height: 160px;
+    touch-action: none
+  }
+
+  .preview {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 
-.footer-container {
-  // height: 160px;
-  border: 1px solid #ccc;
-}
 
-.img-small {
-  width: 80px;
-  height: 160px;
-  touch-action: none
-}
+
+
