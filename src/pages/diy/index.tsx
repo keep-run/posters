@@ -4,6 +4,7 @@ import Img3 from "@/assets/compontsImg/component-3.jpeg";
 import Img4 from "@/assets/compontsImg/component-4.jpeg";
 import Img5 from "@/assets/compontsImg/component-5.jpeg";
 import "@/common/common.less";
+import Modal from "@/components/Modal";
 import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
@@ -33,27 +34,30 @@ export default function DIY() {
   const [isPreview, setIsPreview] = useState(false);
   const [mode, setMode] = useState("diy");
   const [imgs, setImgs] = useState(INIT_IMGS);
+  const [showModal, setModal] = useState(false);
   const zIndex = useRef(10);
   const dropRef = useRef(null);
   const previewRef = useRef(null);
+  const [names, setNames] = useState<Array<any>>([]);
 
   useEffect(() => {
     // 随机选一个背景图
     setBg(BG_IMGS[Math.floor(Math.random() * BG_IMGS.length)]);
   }, []);
 
-  const onDragStart = (event: any) => {};
-  const onDrop = (event: any) => {};
-
   const allowDrop = (event: any) => {
     event.preventDefault();
   };
 
-  const onNext = () => {
-    html2canvas(dropRef.current).then((canvas) => {
-      previewRef.current.src = canvas.toDataURL("image/png");
-      setIsPreview(true);
-    });
+  const onModalOK = (data: Array<any>) => {
+    setModal(false);
+    setNames(data);
+    setTimeout(() => {
+      html2canvas(dropRef.current).then((canvas) => {
+        previewRef.current.src = canvas.toDataURL("image/png");
+        setIsPreview(true);
+      });
+    }, 1000);
   };
 
   const onTouchEndCb = (data: any) => {
@@ -72,6 +76,12 @@ export default function DIY() {
     setIsPreview(false);
     setImgs(INIT_IMGS);
     setMode("diy");
+    setNames([]);
+  };
+
+  const onClose = () => {
+    setModal(false);
+    setNames([]);
   };
   return (
     <div className="diy-container">
@@ -80,7 +90,7 @@ export default function DIY() {
           重置
         </div>
         <ReactIf condition={!isPreview}>
-          <div onClick={onNext} className="action">
+          <div onClick={() => setModal(true)} className="action">
             下一步
           </div>
         </ReactIf>
@@ -94,6 +104,29 @@ export default function DIY() {
           backgroundImage: `url(${mode === "diy" ? bg : templateImg})`,
         }}
       >
+        <ReactIf condition={true}>
+          <div
+            className="show-hisName"
+            style={{
+              zIndex: zIndex.current + 1,
+              display: names[1] ? "flex" : "none",
+            }}
+          >
+            尊敬的{names[1]}
+          </div>
+        </ReactIf>
+        <ReactIf condition={true}>
+          <div
+            className="show-YourName"
+            style={{
+              zIndex: zIndex.current + 1,
+              display: names[0] ? "flex" : "none",
+            }}
+          >
+            From{names[0]}
+          </div>
+        </ReactIf>
+        {/* canvas生成的图 */}
         <img
           src="null"
           alt="Preview"
@@ -121,52 +154,62 @@ export default function DIY() {
         </ReactIf>
       </div>
       <div className="footer-container">
-        <div className="mode-select">
-          <div
-            className={classNames("mode-item", {
-              "active-mode": mode === "diy",
-            })}
-            onClick={() => setMode("diy")}
-          >
-            自定义DIY
+        <ReactIf condition={!isPreview}>
+          <div className="mode-select">
+            <div
+              className={classNames("mode-item", {
+                "active-mode": mode === "diy",
+              })}
+              onClick={() => setMode("diy")}
+            >
+              自定义DIY
+            </div>
+            <div className="divider" />
+            <div
+              className={classNames("mode-item", {
+                "active-mode": mode === "template",
+              })}
+              onClick={() => setMode("template")}
+            >
+              场景模板
+            </div>
           </div>
-          <div className="divider" />
-          <div
-            className={classNames("mode-item", {
-              "active-mode": mode === "template",
-            })}
-            onClick={() => setMode("template")}
-          >
-            场景模板
-          </div>
-        </div>
-        <div className="footer-imgs">
-          <ReactIf condition={mode === "diy"}>
-            {imgs
-              .filter((img) => img.isFooter)
-              .map((item) => (
-                <DragItem
-                  key={`footer-${item.id}`}
-                  imgInfo={item}
-                  getzIndex={() => zIndex.current}
-                  onTouchEndCb={onTouchEndCb}
-                  dropContainer={dropRef.current}
-                  droppableId="droppable"
+          <div className="footer-imgs">
+            <ReactIf condition={mode === "diy"}>
+              {imgs
+                .filter((img) => img.isFooter)
+                .map((item) => (
+                  <DragItem
+                    key={`footer-${item.id}`}
+                    imgInfo={item}
+                    getzIndex={() => zIndex.current}
+                    onTouchEndCb={onTouchEndCb}
+                    dropContainer={dropRef.current}
+                    droppableId="droppable"
+                  />
+                ))}
+            </ReactIf>
+            <ReactIf condition={mode === "template"}>
+              {TEMPLATE_IMGS.map((item, index) => (
+                <img
+                  key={index}
+                  src={item}
+                  className="template-img"
+                  onClick={() => setTemplateImg(item)}
                 />
               ))}
-          </ReactIf>
-          <ReactIf condition={mode === "template"}>
-            {TEMPLATE_IMGS.map((item, index) => (
-              <img
-                key={index}
-                src={item}
-                className="template-img"
-                onClick={() => setTemplateImg(item)}
-              />
-            ))}
-          </ReactIf>
-        </div>
+            </ReactIf>
+          </div>
+        </ReactIf>
+        <ReactIf condition={isPreview}>
+          <div className="preview-footer">
+            <div className="line"></div>
+            <div className="save-tip">长按海报保存</div>
+            <div className="line"></div>
+          </div>
+        </ReactIf>
       </div>
+      <Modal visible={showModal} onClose={onClose} onOK={onModalOK} />
     </div>
   );
 }

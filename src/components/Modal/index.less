@@ -1,0 +1,54 @@
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .modal-content {
+    width: 200px;
+    height: 300px;
+    background-size: contain;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 20px;
+    font-size: 18px;
+    color: gold;
+  }
+
+  .name-desc {
+    margin-top: 30px;
+  }
+
+  .line {
+    height: 2px;
+    background-color: gold;
+    width: 150px;
+    margin: 0 auto;
+  }
+
+ 
+
+}
+
+.mask-container {
+  .adm-mask-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+  }
+}
