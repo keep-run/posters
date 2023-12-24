@@ -104,23 +104,23 @@ export default function DIY() {
           backgroundImage: `url(${mode === "diy" ? bg : templateImg})`,
         }}
       >
-        <ReactIf condition={true}>
+        <ReactIf condition={names[1]}>
           <div
             className="show-hisName"
             style={{
               zIndex: zIndex.current + 1,
-              display: names[1] ? "flex" : "none",
+              // display: names[1] ? "flex" : "none",
             }}
           >
             尊敬的{names[1]}
           </div>
         </ReactIf>
-        <ReactIf condition={true}>
+        <ReactIf condition={names[0]}>
           <div
             className="show-YourName"
             style={{
               zIndex: zIndex.current + 1,
-              display: names[0] ? "flex" : "none",
+              // display: names[0] ? "flex" : "none",
             }}
           >
             From{names[0]}
@@ -133,7 +133,7 @@ export default function DIY() {
           ref={previewRef}
           className="preview"
           style={{
-            zIndex: zIndex.current,
+            zIndex: zIndex.current+10,
             display: isPreview ? "flex" : "none",
           }}
         />

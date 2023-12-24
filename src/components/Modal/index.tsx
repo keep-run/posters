@@ -1,6 +1,6 @@
 import Img1 from "@/assets/compontsImg/component-3.jpeg";
 import { Button, Input } from "antd-mobile";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.less";
 
 function Modal({ visible = false, onClose = () => {}, onOK = () => {} }) {
@@ -13,6 +13,13 @@ function Modal({ visible = false, onClose = () => {}, onOK = () => {} }) {
       onClose();
     }
   };
+
+  useEffect(() => {
+    if (!visible) {
+      setYourName("");
+      setHisName("");
+    }
+  }, [visible]);
 
   return (
     <div
