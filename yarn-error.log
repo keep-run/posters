@@ -1,0 +1,53 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add react-player
+
+PATH: 
+  /Users/wangzhichun/.global_npm/bin:/Users/wangzhichun/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/salt/bin:/usr/local/sbin:/Applications/Wireshark.app/Contents/MacOS:/Users/wangzhichun/.global_npm/bin:/Users/wangzhichun/.npm-global/bin:/usr/local/mysql/bin:/Users/wangzhichun/bin/:/Users/wangzhichun/.npm-global/bin/:/Users/wangzhichun/.global-npm/bin/:/usr/local/mysql/bin:/Users/wangzhichun/bin/::/Users/wangzhichun/.npm-global/bin/:/usr/local/mysql/bin:/Users/wangzhichun/.global-npm/bin/
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.15.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/Users/wangzhichun/Library/Caches/Yarn/v6/npm-color-name-1.1.3-a7d0558bd89c42f795dd42328f740831ca53bc25-integrity/node_modules/color-name/.npmignore' -> '/Users/wangzhichun/Desktop/works/posters/node_modules/@babel/code-frame/node_modules/color-name/.npmignore'
+
+npm manifest: 
+  {
+    "private": true,
+    "author": "王治春 <1508169607@qq.com>",
+    "scripts": {
+      "dev": "umi dev",
+      "build": "umi build",
+      "postinstall": "umi setup",
+      "setup": "umi setup",
+      "start": "npm run dev",
+      "prepare": "husky install"
+    },
+    "dependencies": {
+      "@types/video-react": "^0.15.5",
+      "antd-mobile": "^5.33.2",
+      "classnames": "^2.3.2",
+      "html2canvas": "^1.4.1",
+      "umi": "^4.0.89",
+      "video-react": "^0.16.0"
+    },
+    "devDependencies": {
+      "@types/react": "^18.0.33",
+      "@types/react-dom": "^18.0.11",
+      "typescript": "^4",
+      "husky": "^8",
+      "prettier": "^2",
+      "lint-staged": "^13"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

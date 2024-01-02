@@ -10,10 +10,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@types/video-react": "^0.15.5",
     "antd-mobile": "^5.33.2",
     "classnames": "^2.3.2",
     "html2canvas": "^1.4.1",
-    "umi": "^4.0.89"
+    "umi": "^4.0.89",
+    "video-react": "^0.16.0",
+    "video.js": "^8.6.1",
+    "videojs-contrib-hls": "^5.15.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
@@ -22,5 +26,6 @@
     "husky": "^8",
     "prettier": "^2",
     "lint-staged": "^13"
-  }
+  },
+  "__npminstall_done": false
 }
