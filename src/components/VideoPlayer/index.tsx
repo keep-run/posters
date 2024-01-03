@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import { history } from "umi";
+import "video.js/dist/video-js.css";
 
 const VideoPlayer = ({ videoSrc }) => {
   // const videoRef = useRef(null);
@@ -25,19 +24,26 @@ const VideoPlayer = ({ videoSrc }) => {
   //     }
   //   };
   // }, [videoSrc]);
+  const onEnded = () => {
+    history.push("/diy");
+  };
 
   return (
-    <video
-    id="my-player"
-    className="video-js"
-    controls
-    preload="auto"
-    poster=""
-    data-setup='{}'
-    muted 
-  >
-    <source src={videoSrc} type="video/mp4"/>
-  </video>
+    <>
+      <video
+        autoplay="any"
+        id="my-player"
+        className="video-js"
+        controls
+        preload="auto"
+        poster=""
+        data-setup="{}"
+        muted
+        onEnded={onEnded}
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    </>
   );
 };
 
