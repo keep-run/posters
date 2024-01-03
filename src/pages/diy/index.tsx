@@ -49,6 +49,29 @@ export default function DIY() {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    document.body.addEventListener(
+      "touchmove",
+      function (event) {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
+    document.body.addEventListener(
+      "touchstart",
+      function (event) {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
+    document.body.addEventListener(
+      "touchend",
+      function (event) {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
+  }, []);
   const onModalOK = (data: Array<any>) => {
     setModal(false);
     setNames(data);
@@ -133,7 +156,7 @@ export default function DIY() {
           ref={previewRef}
           className="preview"
           style={{
-            zIndex: zIndex.current+10,
+            zIndex: zIndex.current + 10,
             display: isPreview ? "flex" : "none",
           }}
         />
