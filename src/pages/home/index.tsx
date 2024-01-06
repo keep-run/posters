@@ -3,6 +3,7 @@ import "@/common/common.less";
 import { ControlBar, Player, PlayToggle } from "video-react";
 import "./index.less";
 import VideoPlayer from '@/components/VideoPlayer';
+import gif from '@/assets/test.gif'
 export default () => {
   return (
     <div className="home-container">
@@ -14,7 +15,8 @@ export default () => {
           <PlayToggle />
         </ControlBar>
       </Player> */}
-      <VideoPlayer videoSrc={vidioSrc} />
+      <img src={gif} alt="" />
+      {/* <VideoPlayer videoSrc={vidioSrc} /> */}
     </div>
   );
 };

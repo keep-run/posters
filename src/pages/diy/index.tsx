@@ -1,10 +1,6 @@
-import Img1 from "@/assets/compontsImg/component-1.jpeg";
-import Img2 from "@/assets/compontsImg/component-2.jpeg";
-import Img3 from "@/assets/compontsImg/component-3.jpeg";
-import Img4 from "@/assets/compontsImg/component-4.jpeg";
-import Img5 from "@/assets/compontsImg/component-5.jpeg";
 import "@/common/common.less";
 import Modal from "@/components/Modal";
+import { IMG_INFO } from "@/const/imgInfo";
 import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
@@ -15,34 +11,29 @@ import Bg1 from "@/assets/mainImg/bg1.jpg";
 import Bg2 from "@/assets/mainImg/bg2.jpg";
 import Bg3 from "@/assets/mainImg/bg3.jpg";
 
-const BG_IMGS = [Bg1, Bg2, Bg3];
 const TEMPLATE_IMGS = [Bg1, Bg2, Bg3];
 
-const INIT_IMGS = [
-  { id: "1", url: Img1, isFooter: true },
-  { id: "2", url: Img2, isFooter: true },
-  { id: "3", url: Img3, isFooter: true },
-  { id: "4", url: Img4, isFooter: true },
-  { id: "5", url: Img5, isFooter: true },
-];
+
 
 import DragItem from "@/components/DragItem";
 export default function DIY() {
-  const [flag, setFlag] = useState(1);
-  const [bg, setBg] = useState(BG_IMGS[0]);
-  const [templateImg, setTemplateImg] = useState(TEMPLATE_IMGS[0]);
   const [isPreview, setIsPreview] = useState(false);
   const [mode, setMode] = useState("diy");
-  const [imgs, setImgs] = useState(INIT_IMGS);
   const [showModal, setModal] = useState(false);
   const zIndex = useRef(10);
   const dropRef = useRef(null);
   const previewRef = useRef(null);
   const [names, setNames] = useState<Array<any>>([]);
 
+  const [currentTemplate, setCurrentTemplate] = useState({});
+
+
+
   useEffect(() => {
-    // 随机选一个背景图
-    setBg(BG_IMGS[Math.floor(Math.random() * BG_IMGS.length)]);
+      // 随机选一个模式
+    const templateIndx = Math.floor(Math.random() * IMG_INFO.length);
+    setCurrentTemplate({ ...IMG_INFO[templateIndx] }); 
+    
   }, []);
 
   const allowDrop = (event: any) => {
@@ -50,27 +41,27 @@ export default function DIY() {
   };
 
   useEffect(() => {
-    document.body.addEventListener(
-      "touchmove",
-      function (event) {
-        event.preventDefault();
-      },
-      { passive: false }
-    );
-    document.body.addEventListener(
-      "touchstart",
-      function (event) {
-        event.preventDefault();
-      },
-      { passive: false }
-    );
-    document.body.addEventListener(
-      "touchend",
-      function (event) {
-        event.preventDefault();
-      },
-      { passive: false }
-    );
+    // document.body.addEventListener(
+    //   "touchmove",
+    //   function (event) {
+    //     event.preventDefault();
+    //   },
+    //   { passive: false }
+    // );
+    // document.body.addEventListener(
+    //   "touchstart",
+    //   function (event) {
+    //     event.preventDefault();
+    //   },
+    //   { passive: false }
+    // );
+    // document.body.addEventListener(
+    //   "touchend",
+    //   function (event) {
+    //     event.preventDefault();
+    //   },
+    //   { passive: false }
+    // );
   }, []);
   const onModalOK = (data: Array<any>) => {
     setModal(false);
@@ -84,20 +75,20 @@ export default function DIY() {
   };
 
   const onTouchEndCb = (data: any) => {
-    const newImgs = imgs.map((img) => {
+    const newImgs = currentTemplate?.icons?.map?.((img) => {
       if (data.id === img.id) {
         return { ...img, ...data };
       } else {
         return img;
       }
     });
-    setImgs(newImgs);
+    setCurrentTemplate({ ...currentTemplate, icons: newImgs });
     zIndex.current = zIndex.current + 1;
   };
 
   const onReset = () => {
     setIsPreview(false);
-    setImgs(INIT_IMGS);
+    setCurrentTemplate(IMG_INFO.find(item=>item.templateId === currentTemplate.templateId))
     setMode("diy");
     setNames([]);
   };
@@ -106,6 +97,7 @@ export default function DIY() {
     setModal(false);
     setNames([]);
   };
+
   return (
     <div className="diy-container">
       <div className="header">
@@ -123,10 +115,11 @@ export default function DIY() {
         className="content"
         ref={dropRef}
         id="droppable"
-        style={{
-          backgroundImage: `url(${mode === "diy" ? bg : templateImg})`,
-        }}
+        // style={{
+        //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateImg})`,
+        // }}
       >
+        <img src={currentTemplate?.templateBg} style={{ width: "100%" }} />
         <ReactIf condition={names[1]}>
           <div
             className="show-hisName"
@@ -162,9 +155,9 @@ export default function DIY() {
         />
 
         <ReactIf condition={mode === "diy"}>
-          {imgs
-            .filter((img) => !img.isFooter)
-            .map((item) => (
+          {currentTemplate?.icons
+            ?.filter?.((img) => !img.isFooter)
+            ?.map((item) => (
               <DragItem
                 key={`droppable-${item.id}`}
                 imgInfo={item}
@@ -183,7 +176,9 @@ export default function DIY() {
               className={classNames("mode-item", {
                 "active-mode": mode === "diy",
               })}
-              onClick={() => setMode("diy")}
+              onClick={() => {
+                setMode("diy");
+              }}
             >
               自定义DIY
             </div>
@@ -192,24 +187,29 @@ export default function DIY() {
               className={classNames("mode-item", {
                 "active-mode": mode === "template",
               })}
-              onClick={() => setMode("template")}
+              onClick={() => {
+                setMode("template");
+              }}
             >
               场景模板
             </div>
           </div>
           <div className="footer-imgs">
             <ReactIf condition={mode === "diy"}>
-              {imgs
-                .filter((img) => img.isFooter)
-                .map((item) => (
-                  <DragItem
-                    key={`footer-${item.id}`}
-                    imgInfo={item}
-                    getzIndex={() => zIndex.current}
-                    onTouchEndCb={onTouchEndCb}
-                    dropContainer={dropRef.current}
-                    droppableId="droppable"
-                  />
+              {currentTemplate?.icons?.map((item) => (
+                  <div className="footer-item-container">
+                    <ReactIf condition={item.isFooter}>
+                    <DragItem
+                      key={`footer-${item.id}`}
+                      imgInfo={item}
+                      getzIndex={() => zIndex.current}
+                      onTouchEndCb={onTouchEndCb}
+                      dropContainer={dropRef.current}
+                      droppableId="droppable"
+                    />
+                    </ReactIf>
+                   
+                  </div>
                 ))}
             </ReactIf>
             <ReactIf condition={mode === "template"}>
@@ -218,7 +218,7 @@ export default function DIY() {
                   key={index}
                   src={item}
                   className="template-img"
-                  onClick={() => setTemplateImg(item)}
+                  // onClick={() => setTemplateImg(item)}
                 />
               ))}
             </ReactIf>

@@ -25,6 +25,7 @@ const VideoPlayer = ({ videoSrc }) => {
   //   };
   // }, [videoSrc]);
   const onEnded = () => {
+
     history.push("/diy");
   };
 
@@ -39,6 +40,7 @@ const VideoPlayer = ({ videoSrc }) => {
         poster=""
         data-setup="{}"
         muted
+        x5-video-player-type="h5-page"
         onEnded={onEnded}
       >
         <source src={videoSrc} type="video/mp4" />

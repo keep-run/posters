@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import "./index.less";
 
 const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
@@ -16,6 +16,10 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   });
   const targetRef = useRef<any>(null);
 
+  const disableBodyMove =  useCallback((event)=>{
+    event.preventDefault();
+  },[])
+
   useEffect(() => {
     if (!imgInfo.isFooter && imgInfo.style) {
       targetRef.current.style.left = imgInfo.style.left;
@@ -26,14 +30,27 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   }, [imgInfo, targetRef, droppable]);
 
   const onTouchStart = (e: any) => {
+    // document.body.addEventListener(
+    //   "touchmove",
+    //   disableBodyMove,
+    //   // function (event) {
+    //   //   event.preventDefault();
+    //   // },
+    //   // { passive: false }
+    //   { passive: false }
+    // );
     const touch = e.touches[0];
     const offsetX = touch.clientX - targetRef.current?.offsetLeft;
     const offsetY = touch.clientY - targetRef.current?.offsetTop;
     offset.current = { offsetX, offsetY };
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   const onTouchMove = (e: any) => {
+  
     e.stopPropagation();
+    e.preventDefault();
     const touch = e.touches[0];
     const x = touch.clientX - offset.current.offsetX;
     let y = touch.clientY - offset.current.offsetY;
