@@ -27,6 +27,8 @@
     flex-shrink: 1;
     background-size: cover;
     position: relative;
+    overflow: hidden;
+    // touch-action: none;
   }
 
   .mode-select {
@@ -49,29 +51,31 @@
     color: gold;
   }
 
-  
+
 
   .footer-imgs {
     // height: 160px;
     border: 1px solid #ccc;
     display: flex;
     overflow: scroll;
-    // column-gap: 5px;
+    column-gap: 8px;
     height: 80px;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .footer-item-container {
     display: flex;
     align-items: center;
-    background-color: rgb(33,33,33);
+    background-color: rgb(33, 33, 33);
+    flex-grow: 1;
+    flex-basis: 20px;
   }
 
-  .template-img {
-    width: 80px;
-    height: 160px;
-    touch-action: none
-  }
+  // .template-img {
+  //   width: 80px;
+  //   height: 160px;
+  //   touch-action: none
+  // }
 
   .preview {
     position: absolute;

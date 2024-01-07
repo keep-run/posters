@@ -7,14 +7,6 @@ import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
 import "./index.less";
 
-import Bg1 from "@/assets/mainImg/bg1.jpg";
-import Bg2 from "@/assets/mainImg/bg2.jpg";
-import Bg3 from "@/assets/mainImg/bg3.jpg";
-
-const TEMPLATE_IMGS = [Bg1, Bg2, Bg3];
-
-
-
 import DragItem from "@/components/DragItem";
 export default function DIY() {
   const [isPreview, setIsPreview] = useState(false);
@@ -24,45 +16,18 @@ export default function DIY() {
   const dropRef = useRef(null);
   const previewRef = useRef(null);
   const [names, setNames] = useState<Array<any>>([]);
-
   const [currentTemplate, setCurrentTemplate] = useState({});
 
-
+  // 场景模版
+  const [templateBg, setTemplateBg] = useState("");
 
   useEffect(() => {
-      // 随机选一个模式
+    // 随机选一个模式
     const templateIndx = Math.floor(Math.random() * IMG_INFO.length);
-    setCurrentTemplate({ ...IMG_INFO[templateIndx] }); 
-    
+    setCurrentTemplate({ ...IMG_INFO[templateIndx] });
+    setTemplateBg(IMG_INFO[templateIndx].templateBg);
   }, []);
 
-  const allowDrop = (event: any) => {
-    event.preventDefault();
-  };
-
-  useEffect(() => {
-    // document.body.addEventListener(
-    //   "touchmove",
-    //   function (event) {
-    //     event.preventDefault();
-    //   },
-    //   { passive: false }
-    // );
-    // document.body.addEventListener(
-    //   "touchstart",
-    //   function (event) {
-    //     event.preventDefault();
-    //   },
-    //   { passive: false }
-    // );
-    // document.body.addEventListener(
-    //   "touchend",
-    //   function (event) {
-    //     event.preventDefault();
-    //   },
-    //   { passive: false }
-    // );
-  }, []);
   const onModalOK = (data: Array<any>) => {
     setModal(false);
     setNames(data);
@@ -88,7 +53,9 @@ export default function DIY() {
 
   const onReset = () => {
     setIsPreview(false);
-    setCurrentTemplate(IMG_INFO.find(item=>item.templateId === currentTemplate.templateId))
+    setCurrentTemplate(
+      IMG_INFO.find((item) => item.templateId === currentTemplate.templateId)
+    );
     setMode("diy");
     setNames([]);
   };
@@ -116,10 +83,17 @@ export default function DIY() {
         ref={dropRef}
         id="droppable"
         // style={{
+        //   // touchAction:  "none !important"
+        //   touchAction: isDraging ? "none !important" : "auto",
+        // }}
+        // style={{
         //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateImg})`,
         // }}
       >
-        <img src={currentTemplate?.templateBg} style={{ width: "100%" }} />
+        <img
+          src={mode === "diy" ? currentTemplate?.templateBg : templateBg}
+          style={{ width: "100%" }}
+        />
         <ReactIf condition={names[1]}>
           <div
             className="show-hisName"
@@ -136,7 +110,6 @@ export default function DIY() {
             className="show-YourName"
             style={{
               zIndex: zIndex.current + 1,
-              // display: names[0] ? "flex" : "none",
             }}
           >
             From{names[0]}
@@ -197,8 +170,8 @@ export default function DIY() {
           <div className="footer-imgs">
             <ReactIf condition={mode === "diy"}>
               {currentTemplate?.icons?.map((item) => (
-                  <div className="footer-item-container">
-                    <ReactIf condition={item.isFooter}>
+                <div className="footer-item-container">
+                  <ReactIf condition={item.isFooter}>
                     <DragItem
                       key={`footer-${item.id}`}
                       imgInfo={item}
@@ -207,18 +180,17 @@ export default function DIY() {
                       dropContainer={dropRef.current}
                       droppableId="droppable"
                     />
-                    </ReactIf>
-                   
-                  </div>
-                ))}
+                  </ReactIf>
+                </div>
+              ))}
             </ReactIf>
             <ReactIf condition={mode === "template"}>
-              {TEMPLATE_IMGS.map((item, index) => (
+              {IMG_INFO.map((item, index) => (
                 <img
                   key={index}
-                  src={item}
+                  src={item.templateBg}
                   className="template-img"
-                  // onClick={() => setTemplateImg(item)}
+                  onClick={() => setTemplateBg(item.templateBg)}
                 />
               ))}
             </ReactIf>

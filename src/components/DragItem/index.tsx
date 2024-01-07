@@ -1,24 +1,22 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./index.less";
 
 const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   const droppable = useRef<any>(null);
-
   const getPxToNumber = (str: string) => {
     return Number(str.replace("px", ""));
   };
   useEffect(() => {
     droppable.current = document.getElementById(droppableId);
   }, [droppableId]);
+
+  // 计算出点的点距离当前图片左侧和上方的距离
   const offset = useRef({
     offsetX: 0,
     offsetY: 0,
   });
-  const targetRef = useRef<any>(null);
 
-  const disableBodyMove =  useCallback((event)=>{
-    event.preventDefault();
-  },[])
+  const targetRef = useRef<any>(null);
 
   useEffect(() => {
     if (!imgInfo.isFooter && imgInfo.style) {
@@ -30,30 +28,22 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   }, [imgInfo, targetRef, droppable]);
 
   const onTouchStart = (e: any) => {
-    // document.body.addEventListener(
-    //   "touchmove",
-    //   disableBodyMove,
-    //   // function (event) {
-    //   //   event.preventDefault();
-    //   // },
-    //   // { passive: false }
-    //   { passive: false }
-    // );
-    const touch = e.touches[0];
-    const offsetX = touch.clientX - targetRef.current?.offsetLeft;
-    const offsetY = touch.clientY - targetRef.current?.offsetTop;
-    offset.current = { offsetX, offsetY };
     e.stopPropagation();
-    e.preventDefault();
+    const touch = e.touches[0];
+
+    // touch.clientX  touch.clientY 点击的点距离body可视区的位置；
+    const offsetX = touch.clientX - targetRef.current?.offsetLeft;
+    const offsetY = touch.pageY - targetRef.current?.offsetTop;
+    offset.current = { offsetX, offsetY };
+    document.body.style.overflow = "hidden";
   };
 
   const onTouchMove = (e: any) => {
-  
     e.stopPropagation();
-    e.preventDefault();
+    e.persist();
     const touch = e.touches[0];
     const x = touch.clientX - offset.current.offsetX;
-    let y = touch.clientY - offset.current.offsetY;
+    let y = touch.pageY - offset.current.offsetY;
 
     targetRef.current.style.left = `${x}px`;
     targetRef.current.style.top = `${y}px`;
@@ -63,7 +53,7 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
 
   const onTouchEnd = (event: any) => {
     event.stopPropagation();
-
+    document.body.style.overflow = "auto";
     const targetRect = targetRef.current.getBoundingClientRect();
     const droppableRect = droppable.current?.getBoundingClientRect?.() || {};
 
@@ -123,7 +113,7 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       style: {
         top: `${
           getPxToNumber(targetRef.current.style.top) -
-          (imgInfo.isFooter ? droppableRect.top : 0)
+          (imgInfo.isFooter ? window.scrollY + droppableRect.top : 0)
         }px`,
         left: `${
           getPxToNumber(targetRef.current.style.left) -
