@@ -5,6 +5,7 @@ import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
+import WishCard from "@/components/WishCard";
 import "./index.less";
 
 import DragItem from "@/components/DragItem";
@@ -94,7 +95,8 @@ export default function DIY() {
           src={mode === "diy" ? currentTemplate?.templateBg : templateBg}
           style={{ width: "100%" }}
         />
-        <ReactIf condition={names[1]}>
+        <WishCard  yourName={names[0]} hisName={names[1]}/>
+        {/* <ReactIf condition={names[1]}>
           <div
             className="show-hisName"
             style={{
@@ -114,7 +116,7 @@ export default function DIY() {
           >
             From{names[0]}
           </div>
-        </ReactIf>
+        </ReactIf> */}
         {/* canvas生成的图 */}
         <img
           src="null"

@@ -1,9 +1,9 @@
-import Img1 from "@/assets/compontsImg/component-3.jpeg";
-import { Button, Input } from "antd-mobile";
+import modalBg from "@/assets/modalBg.png";
+import { Input } from "antd-mobile";
 import { useEffect, useRef, useState } from "react";
 import "./index.less";
 
-function Modal({ visible = false, onClose = () => {}, onOK = () => {} }) {
+function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
   const [yourName, setYourName] = useState("");
   const [hisName, setHisName] = useState("");
   const maskRef = useRef(null);
@@ -33,38 +33,44 @@ function Modal({ visible = false, onClose = () => {}, onOK = () => {} }) {
       <div
         className="modal-content"
         style={{
-          backgroundImage: `url(${Img1})`,
+          backgroundImage: `url(${modalBg})`,
         }}
       >
-        <div>填写以下信息</div>
-        <div>小德帮你搬运祝福</div>
-        <div className="name-desc">你的姓名</div>
         <Input
           placeholder=""
           value={yourName}
           onChange={(val) => {
             setYourName(val);
           }}
-          style={{ "--text-align": "center" }}
+          style={{
+            "--text-align": "center",
+            position: "absolute",
+            top: "211px",
+          }}
         />
-        <div className="line"></div>
-        <div className="name-desc">获赠人姓名</div>
+
         <Input
           placeholder=""
           value={hisName}
           onChange={(val) => {
             setHisName(val);
           }}
-          style={{ "--text-align": "center" }}
-        />
-        <div className="line"></div>
-        <Button
-          onClick={() => {
-            onOK([yourName, hisName]);
+          style={{
+            "--text-align": "center",
+            position: "absolute",
+            top: "291px",
           }}
-        >
-          确认
-        </Button>
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            height: 36,
+            top: 344,
+            width:'100%'
+          }}
+          onClick={()=>onOK([yourName,hisName])}
+        />
       </div>
     </div>
   );
