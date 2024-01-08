@@ -1,11 +1,11 @@
 import "@/common/common.less";
 import Modal from "@/components/Modal";
+import WishCard from "@/components/WishCard";
 import { IMG_INFO } from "@/const/imgInfo";
 import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
-import WishCard from "@/components/WishCard";
 import "./index.less";
 
 import DragItem from "@/components/DragItem";
@@ -81,68 +81,45 @@ export default function DIY() {
 
       <div
         className="content"
-        ref={dropRef}
-        id="droppable"
+
         // style={{
-        //   // touchAction:  "none !important"
-        //   touchAction: isDraging ? "none !important" : "auto",
-        // }}
-        // style={{
-        //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateImg})`,
+        //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateBg})`
         // }}
       >
-        <img
-          src={mode === "diy" ? currentTemplate?.templateBg : templateBg}
-          style={{ width: "100%" }}
-        />
-        <WishCard  yourName={names[0]} hisName={names[1]}/>
-        {/* <ReactIf condition={names[1]}>
-          <div
-            className="show-hisName"
-            style={{
-              zIndex: zIndex.current + 1,
-              // display: names[1] ? "flex" : "none",
-            }}
-          >
-            尊敬的{names[1]}
-          </div>
-        </ReactIf>
-        <ReactIf condition={names[0]}>
-          <div
-            className="show-YourName"
-            style={{
-              zIndex: zIndex.current + 1,
-            }}
-          >
-            From{names[0]}
-          </div>
-        </ReactIf> */}
-        {/* canvas生成的图 */}
-        <img
-          src="null"
-          alt="Preview"
-          ref={previewRef}
-          className="preview"
-          style={{
-            zIndex: zIndex.current + 10,
-            display: isPreview ? "flex" : "none",
-          }}
-        />
+        <div ref={dropRef} id="droppable" className="droppable">
+          <img
+            src={mode === "diy" ? currentTemplate?.templateBg : templateBg}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
 
-        <ReactIf condition={mode === "diy"}>
-          {currentTemplate?.icons
-            ?.filter?.((img) => !img.isFooter)
-            ?.map((item) => (
-              <DragItem
-                key={`droppable-${item.id}`}
-                imgInfo={item}
-                getzIndex={() => zIndex.current}
-                onTouchEndCb={onTouchEndCb}
-                dropContainer={dropRef.current}
-                droppableId="droppable"
-              />
-            ))}
-        </ReactIf>
+          <WishCard yourName={names[0]} hisName={names[1]} />
+          {/* canvas生成的图 */}
+          <img
+            src="null"
+            alt="Preview"
+            ref={previewRef}
+            className="preview"
+            style={{
+              zIndex: zIndex.current + 10,
+              display: isPreview ? "flex" : "none",
+            }}
+          />
+
+          <ReactIf condition={mode === "diy"}>
+            {currentTemplate?.icons
+              ?.filter?.((img) => !img.isFooter)
+              ?.map((item) => (
+                <DragItem
+                  key={`droppable-${item.id}`}
+                  imgInfo={item}
+                  getzIndex={() => zIndex.current}
+                  onTouchEndCb={onTouchEndCb}
+                  dropContainer={dropRef.current}
+                  droppableId="droppable"
+                />
+              ))}
+          </ReactIf>
+        </div>
       </div>
       <div className="footer-container">
         <ReactIf condition={!isPreview}>
