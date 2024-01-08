@@ -10,7 +10,7 @@ import { history } from "umi";
 export default () => {
   useEffect(()=>{
     setTimeout(()=>{
-      history.push("/diy");
+      history.push("/guide");
     },2000)
   },[])
   return (

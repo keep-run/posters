@@ -1,37 +1,40 @@
 import "@/common/common.less";
-import Modal from "@/components/Modal";
 import WishCard from "@/components/WishCard";
 import { IMG_INFO } from "@/const/imgInfo";
 import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "umi";
 import "./index.less";
 
 import DragItem from "@/components/DragItem";
 export default function DIY() {
   const [isPreview, setIsPreview] = useState(false);
   const [mode, setMode] = useState("diy");
-  const [showModal, setModal] = useState(false);
+  // const [showModal, setModal] = useState(false);
   const zIndex = useRef(10);
   const dropRef = useRef(null);
   const previewRef = useRef(null);
   const [names, setNames] = useState<Array<any>>([]);
   const [currentTemplate, setCurrentTemplate] = useState({});
+  const { search } = useLocation();
 
   // 场景模版
   const [templateBg, setTemplateBg] = useState("");
 
   useEffect(() => {
-    // 随机选一个模式
-    const templateIndx = Math.floor(Math.random() * IMG_INFO.length);
-    setCurrentTemplate({ ...IMG_INFO[templateIndx] });
-    setTemplateBg(IMG_INFO[templateIndx].templateBg);
+    let searchParams = new URLSearchParams(search);
+    const templateId = searchParams.get("templateId");
+    const hisName = searchParams.get("hisName");
+    const yourName = searchParams.get("yourName");
+    setNames([yourName, hisName]);
+    const current = IMG_INFO.find((item) => item.templateId == templateId);
+    setCurrentTemplate(current);
+    setTemplateBg(current.templateBg);
   }, []);
 
-  const onModalOK = (data: Array<any>) => {
-    setModal(false);
-    setNames(data);
+  const onNext = () => {
     setTimeout(() => {
       html2canvas(dropRef.current).then((canvas) => {
         previewRef.current.src = canvas.toDataURL("image/png");
@@ -54,18 +57,15 @@ export default function DIY() {
 
   const onReset = () => {
     setIsPreview(false);
-    setCurrentTemplate(
-      IMG_INFO.find((item) => item.templateId === currentTemplate.templateId)
-    );
+    let searchParams = new URLSearchParams(search);
+    const templateId = searchParams.get("templateId");
+    setCurrentTemplate(IMG_INFO.find((item) => item.templateId == templateId));
     setMode("diy");
-    setNames([]);
   };
 
-  const onClose = () => {
-    setModal(false);
-    setNames([]);
+  const handleTemplateChange = (templateId) => {
+    setCurrentTemplate(IMG_INFO.find((item) => item.templateId == templateId));
   };
-
   return (
     <div className="diy-container">
       <div className="header">
@@ -73,7 +73,7 @@ export default function DIY() {
           重置
         </div>
         <ReactIf condition={!isPreview}>
-          <div onClick={() => setModal(true)} className="action">
+          <div onClick={onNext} className="action">
             下一步
           </div>
         </ReactIf>
@@ -88,7 +88,7 @@ export default function DIY() {
       >
         <div ref={dropRef} id="droppable" className="droppable">
           <img
-            src={mode === "diy" ? currentTemplate?.templateBg : templateBg}
+            src={ currentTemplate?.templateBg }
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           />
 
@@ -169,7 +169,8 @@ export default function DIY() {
                   key={index}
                   src={item.templateBg}
                   className="template-img"
-                  onClick={() => setTemplateBg(item.templateBg)}
+                  onClick={() => handleTemplateChange(item.templateId)}
+                  // onClick={() => setTemplateBg(item.templateBg)}
                 />
               ))}
             </ReactIf>
@@ -183,7 +184,7 @@ export default function DIY() {
           </div>
         </ReactIf>
       </div>
-      <Modal visible={showModal} onClose={onClose} onOK={onModalOK} />
+      {/* <Modal visible={showModal} onClose={onClose} onOK={onModalOK} /> */}
     </div>
   );
 }
