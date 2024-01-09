@@ -31,8 +31,9 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
     e.stopPropagation();
     const touch = e.touches[0];
 
+    const {left}=targetRef.current.getBoundingClientRect()
     // touch.clientX  touch.clientY 点击的点距离body可视区的位置；
-    const offsetX = touch.clientX - targetRef.current?.offsetLeft;
+    const offsetX = touch.pageX - targetRef.current?.offsetLeft;
     const offsetY = touch.pageY - targetRef.current?.offsetTop;
     offset.current = { offsetX, offsetY };
     document.body.style.overflow = "hidden";
@@ -42,7 +43,7 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
     e.stopPropagation();
     e.persist();
     const touch = e.touches[0];
-    const x = touch.clientX - offset.current.offsetX;
+    const x = touch.pageX - offset.current.offsetX;
     let y = touch.pageY - offset.current.offsetY;
 
     targetRef.current.style.left = `${x}px`;
