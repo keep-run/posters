@@ -25,12 +25,12 @@ export default function DIY() {
   const [templateBg, setTemplateBg] = useState("");
 
   useEffect(() => {
-    const { clientWidth, clientHeight } = dropRef.current;
-    const width = 0.5 * clientHeight;
-    setSize({
-      width,
-      height: clientHeight,
-    });
+    // const { clientWidth, clientHeight } = dropRef.current;
+    // const width = 0.5 * clientHeight;
+    // setSize({
+    //   width,
+    //   height: clientHeight,
+    // });
 
     let searchParams = new URLSearchParams(search);
     const templateId = searchParams.get("templateId");
@@ -100,16 +100,17 @@ export default function DIY() {
           ref={dropRef}
           id="droppable"
           className="droppable"
-          style={{
-            width: size.width || "auto",
-            height: size.height || "auto",
-          }}
+          // style={{
+          //   width: size.width || "auto",
+          //   height: size.height || "auto",
+          // }}
         >
           <img
             src={currentTemplate?.templateBg}
             style={{
-              width: size.width || "auto",
-              height: size.height || "auto",
+              width:'100%'
+              // width: size.width || "auto",
+              // height: size.height || "auto",
             }}
           />
 
@@ -123,8 +124,8 @@ export default function DIY() {
             style={{
               zIndex: zIndex.current + 10,
               display: isPreview ? "flex" : "none",
-              width: size.width || "auto",
-              height: size.height || "auto",
+              // width: size.width || "auto",
+              // height: size.height || "auto",
             }}
           />
 

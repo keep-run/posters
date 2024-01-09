@@ -46,6 +46,8 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
             "--text-align": "center",
             position: "absolute",
             top: "211px",
+            '--color': 'rgb(249,219,164)',
+            marginLeft:10,
           }}
         />
 
@@ -59,6 +61,8 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
             "--text-align": "center",
             position: "absolute",
             top: "291px",
+            '--color': 'rgb(249,219,164)',
+            marginLeft:10,
           }}
         />
 
