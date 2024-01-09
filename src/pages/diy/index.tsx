@@ -18,12 +18,20 @@ export default function DIY() {
   const previewRef = useRef(null);
   const [names, setNames] = useState<Array<any>>([]);
   const [currentTemplate, setCurrentTemplate] = useState({});
+  const [size, setSize] = useState({});
   const { search } = useLocation();
 
   // 场景模版
   const [templateBg, setTemplateBg] = useState("");
 
   useEffect(() => {
+    const { clientWidth, clientHeight } = dropRef.current;
+    const width = 0.5 * clientHeight;
+    setSize({
+      width,
+      height: clientHeight,
+    });
+
     let searchParams = new URLSearchParams(search);
     const templateId = searchParams.get("templateId");
     const hisName = searchParams.get("hisName");
@@ -81,15 +89,28 @@ export default function DIY() {
 
       <div
         className="content"
-
+        style={{
+          flexGrow: isPreview ? 0 : 1,
+        }}
         // style={{
         //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateBg})`
         // }}
       >
-        <div ref={dropRef} id="droppable" className="droppable">
+        <div
+          ref={dropRef}
+          id="droppable"
+          className="droppable"
+          style={{
+            width: size.width || "auto",
+            height: size.height || "auto",
+          }}
+        >
           <img
-            src={ currentTemplate?.templateBg }
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            src={currentTemplate?.templateBg}
+            style={{
+              width: size.width || "auto",
+              height: size.height || "auto",
+            }}
           />
 
           <WishCard yourName={names[0]} hisName={names[1]} />
@@ -102,6 +123,8 @@ export default function DIY() {
             style={{
               zIndex: zIndex.current + 10,
               display: isPreview ? "flex" : "none",
+              width: size.width || "auto",
+              height: size.height || "auto",
             }}
           />
 

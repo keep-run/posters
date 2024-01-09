@@ -3,16 +3,16 @@ import "@/common/common.less";
 // import { ControlBar, Player, PlayToggle } from "video-react";
 import "./index.less";
 // import VideoPlayer from '@/components/VideoPlayer';
-import gif from '@/assets/test.gif'
+import gif from "@/assets/test.gif";
 import { useEffect } from "react";
 import { history } from "umi";
 
 export default () => {
-  useEffect(()=>{
-    setTimeout(()=>{
-      history.push("/guide");
-    },2000)
-  },[])
+  useEffect(() => {
+    setTimeout(() => {
+      history.replace("/guide");
+    }, 2000);
+  }, []);
   return (
     <div className="home-container">
       {/* <Player

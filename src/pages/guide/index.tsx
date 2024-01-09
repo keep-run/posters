@@ -27,10 +27,10 @@ export default () => {
   };
 
   const goDiyPage = () => {
-    history.push({
-      pathname: '/diy',
+    history.replace({
+      pathname: "/diy",
       search: `?templateId=${currentTemplate.templateId}&yourName=${names[0]}&hisName=${names[1]}`,
-    })
+    });
   };
 
   return (

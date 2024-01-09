@@ -23,13 +23,13 @@
   }
 
   .content {
-    flex-grow: 1;
     flex-shrink: 1;
     background-size: cover;
     overflow: hidden;
     display: flex;
     justify-content: center;
     // touch-action: none;
+    // border: 1px solid darkblue;
   }
 
   .droppable {
@@ -55,8 +55,6 @@
   .active-mode {
     color: gold;
   }
-
-
 
   .footer-imgs {
     // height: 160px;
@@ -96,7 +94,7 @@
     color: gold;
     position: absolute;
     top: 20px;
-    right: 20px
+    right: 20px;
   }
 
   .show-YourName {
@@ -117,7 +115,8 @@
   }
 
   .preview-footer {
-    height: 190px;
+    // height: 190px;
+    flex-grow: 1;
     padding-top: 30px;
     box-sizing: border-box;
     display: flex;
@@ -128,5 +127,4 @@
     font-size: 16px;
     margin: 0 10px;
   }
-
 }
