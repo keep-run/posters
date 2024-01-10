@@ -23,8 +23,10 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       targetRef.current.style.left = imgInfo.style.left;
       targetRef.current.style.top = imgInfo.style.top;
       targetRef.current.style.position = imgInfo.style.position;
+      targetRef.current.style.width = imgInfo.style.width;
       targetRef.current.style.zIndex = getzIndex();
     }
+    console.log('---wzc------imgInfo-----------',imgInfo)
   }, [imgInfo, targetRef, droppable]);
 
   const onTouchStart = (e: any) => {

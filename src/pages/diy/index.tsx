@@ -39,7 +39,7 @@ export default function DIY() {
     setNames([yourName, hisName]);
     const current = IMG_INFO.find((item) => item.templateId == templateId);
     setCurrentTemplate(current);
-    setTemplateBg(current.templateBg);
+    // setTemplateBg(current.templateBg);
   }, []);
 
   const onNext = () => {
@@ -54,7 +54,7 @@ export default function DIY() {
   const onTouchEndCb = (data: any) => {
     const newImgs = currentTemplate?.icons?.map?.((img) => {
       if (data.id === img.id) {
-        return { ...img, ...data };
+        return { ...img, ...data,style:{...img.style, ...data.style} };
       } else {
         return img;
       }
@@ -106,7 +106,7 @@ export default function DIY() {
           // }}
         >
           <img
-            src={currentTemplate?.templateBg}
+            src={currentTemplate?.diyBg}
             style={{
               width:'100%'
               // width: size.width || "auto",
