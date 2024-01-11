@@ -13,34 +13,26 @@
   .mov-img {
     position: absolute;
     width: 200px;
-    top: 50%;
+    top: 56%;
     bottom: 0;
     animation-name: move;
-    animation-duration: 5s;
+    animation-duration: 7s;
     animation-fill-mode: forwards;
     transform: translateX(-50%) ;
   }
 
   @keyframes move {
     0% {
-      left: -200px
+      left: -200px;
+      opacity: 1
     }
-
-    // 25% {
-    //   margin-left: -1200px;
-    // }
-
-    // 50% {
-    //   margin-left: -2400px;
-    // }
-
-    // 75% {
-    //   margin-left: -3600px;
-
-    // }
-
+    80% {
+      left: calc(50%);
+      opacity: 1
+    }
     100% {
       left: calc(50%);
+      opacity: 0
     }
   }
 
@@ -76,7 +68,7 @@
     left: 50%;
     transform: translateX(-50%) ;
     animation-name: text2;
-    animation-duration: 6s;
+    animation-duration: 8s;
     animation-fill-mode: forwards;
   }
   @keyframes text2 {
@@ -86,8 +78,325 @@
     50% {
       opacity: 0;
     }
+    80% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .base-img {
+    position: absolute;
+    width: 45%;
+    top: 56%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 8s;
+    animation-fill-mode: forwards;
+    animation-name: baseImg;
+    opacity: 0;
+  }
+  @keyframes baseImg {
+    20% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 0;
+    }
     100% {
       opacity: 1;
+    }
+  }
+
+
+  .anim1-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-name: anim1Img;
+    animation-timing-function: 'linear';
+    animation-delay: 8s;
+    opacity: 0;
+  }
+
+  @keyframes anim1Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 18%;
+      top: 43%;
+      left: 38%
+    }
+  }
+
+  .anim2-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 4s;
+    animation-fill-mode: forwards;
+    animation-name: anim2Img;
+    animation-timing-function: 'linear';
+    animation-delay: 8s;
+    opacity: 0;
+  }
+
+  @keyframes anim2Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 13%;
+      top: 50%;
+      left: 70%
+    }
+  }
+
+
+  .anim3-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-name: anim3Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(15deg);
+    opacity: 0;
+  }
+
+  @keyframes anim3Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 18%;
+      top: 30%;
+      left: 60%
+    }
+  }
+
+  .anim4-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-name: anim4Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(-20deg);
+    opacity: 0;
+  }
+
+  @keyframes anim4Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 18%;
+      top: 34%;
+      left: 37%
+    }
+  }
+
+  .anim5-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 4s;
+    animation-fill-mode: forwards;
+    animation-name: anim5Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(20deg);
+    opacity: 0;
+  }
+
+  @keyframes anim5Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 30%;
+      top: 46%;
+      left: 9%
+    }
+  }
+
+
+  .anim6-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-name: anim6Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    // transform: rotate(20deg);
+    opacity: 0;
+  }
+
+  @keyframes anim6Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 25%;
+      top: 40%;
+      left: 58%
+    }
+  }
+
+  .anim7-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-name: anim7Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(35deg);
+    opacity: 0;
+  }
+
+  @keyframes anim7Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 10%;
+      top: 39%;
+      left: 70%
+    }
+  }
+  .anim8-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 4s;
+    animation-fill-mode: forwards;
+    animation-name: anim8Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(25deg);
+    opacity: 0;
+  }
+
+  @keyframes anim8Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 25%;
+      top: 53%;
+      left: 30%
+    }
+  }
+
+  .anim9-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 8s;
+    animation-fill-mode: forwards;
+    animation-name: anim9Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(-30deg);
+    opacity: 0;
+  }
+
+  @keyframes anim9Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 25%;
+      top: 29%;
+      left: 65%
+    }
+  }
+
+  .anim10-img {
+    position: absolute;
+    width: 0px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) ;
+    animation-duration: 8s;
+    animation-fill-mode: forwards;
+    animation-name: anim10Img;
+    animation-timing-function: linear;
+    animation-delay: 8s;
+    transform: rotate(-10deg);
+    opacity: 0;
+  }
+
+  @keyframes anim10Img {
+    0% {
+      width: 0px;
+      top: 60%;
+      left: 50%;
+    }
+    100% {
+      opacity: 1;
+      width: 7%;
+      top: 47%;
+      left: 50%
     }
   }
 }
