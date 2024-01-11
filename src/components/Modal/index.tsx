@@ -47,8 +47,11 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
             position: "absolute",
             top: "211px",
             '--color': 'rgb(249,219,164)',
+            '--font-size':'18px',
             marginLeft:10,
+          
           }}
+          className="name-input"
         />
 
         <Input
@@ -57,11 +60,13 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
           onChange={(val) => {
             setHisName(val);
           }}
+          className="name-input"
           style={{
             "--text-align": "center",
             position: "absolute",
             top: "291px",
             '--color': 'rgb(249,219,164)',
+            '--font-size':'18px',
             marginLeft:10,
           }}
         />

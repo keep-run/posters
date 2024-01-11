@@ -21,8 +21,8 @@ export default function DIY() {
   const [size, setSize] = useState({});
   const { search } = useLocation();
 
-  // 场景模版
-  const [templateBg, setTemplateBg] = useState("");
+  
+
 
   useEffect(() => {
     // const { clientWidth, clientHeight } = dropRef.current;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import "./index.less";
 
 const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
@@ -17,7 +17,27 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   });
 
   const targetRef = useRef<any>(null);
+  
 
+  const handleTouchMove = useCallback((e: any)=>{
+    e.stopPropagation();
+    e.preventDefault();
+    const touch = e.touches[0];
+    const x = touch.clientX - offset.current.offsetX;
+    let y = touch.pageY - offset.current.offsetY;
+
+    targetRef.current.style.left = `${x}px`;
+    targetRef.current.style.top = `${y}px`;
+    targetRef.current.style.position = `absolute`;
+    targetRef.current.style["z-index"] = getzIndex();
+  },[])
+
+  useEffect(()=>{
+    targetRef.current.addEventListener('touchmove',handleTouchMove,{ passive: false })
+    return ()=>{
+      targetRef.current?.removeEventListener?.('touchmove',handleTouchMove)
+    }
+  },[])
   useEffect(() => {
     if (!imgInfo.isFooter && imgInfo.style) {
       targetRef.current.style.left = imgInfo.style.left;
@@ -26,7 +46,6 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       targetRef.current.style.width = imgInfo.style.width;
       targetRef.current.style.zIndex = getzIndex();
     }
-    console.log('---wzc------imgInfo-----------',imgInfo)
   }, [imgInfo, targetRef, droppable]);
 
   const onTouchStart = (e: any) => {
@@ -37,25 +56,13 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
     const offsetX = touch.clientX - targetRef.current?.offsetLeft;
     const offsetY = touch.pageY - targetRef.current?.offsetTop;
     offset.current = { offsetX, offsetY };
-    document.body.style.overflow = "hidden";
-  };
-
-  const onTouchMove = (e: any) => {
-    e.stopPropagation();
-    e.persist();
-    const touch = e.touches[0];
-    const x = touch.clientX - offset.current.offsetX;
-    let y = touch.pageY - offset.current.offsetY;
-
-    targetRef.current.style.left = `${x}px`;
-    targetRef.current.style.top = `${y}px`;
-    targetRef.current.style.position = `absolute`;
-    targetRef.current.style["z-index"] = getzIndex();
+    // document.body.style.overflow = "hidden";
   };
 
   const onTouchEnd = (event: any) => {
+    // document.removeEventListener('touchmove',touchmove,true)
     event.stopPropagation();
-    document.body.style.overflow = "auto";
+    // document.body.style.overflow = "auto";
     const targetRect = targetRef.current.getBoundingClientRect();
     const droppableRect = droppable.current?.getBoundingClientRect?.() || {};
 
@@ -132,7 +139,7 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       src={imgInfo.url}
       id={imgInfo.id}
       onTouchStartCapture={onTouchStart}
-      onTouchMoveCapture={onTouchMove}
+      // onTouchMoveCapture={onTouchMove}
       onTouchEndCapture={onTouchEnd}
       onTouchEnd={onTouchEnd}
       ref={targetRef}
