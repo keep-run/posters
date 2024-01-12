@@ -1,7 +1,8 @@
 import { history } from "umi";
 import "video.js/dist/video-js.css";
-
-const VideoPlayer = ({ videoSrc }) => {
+import postrtImg from '@/assets/poster.jpg'
+// import 
+const VideoPlayer = ({ videoSrc,onEnded }) => {
   // const videoRef = useRef(null);
   // const playerRef = useRef(null);
 
@@ -24,10 +25,7 @@ const VideoPlayer = ({ videoSrc }) => {
   //     }
   //   };
   // }, [videoSrc]);
-  const onEnded = () => {
-
-    history.push("/diy");
-  };
+ 
 
   return (
     <>
@@ -37,11 +35,12 @@ const VideoPlayer = ({ videoSrc }) => {
         className="video-js"
         controls
         preload="auto"
-        poster=""
+        poster={postrtImg}
         data-setup="{}"
         muted
         x5-video-player-type="h5-page"
         onEnded={onEnded}
+        style={{width:'100%'}}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
