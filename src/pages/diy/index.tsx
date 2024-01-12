@@ -127,7 +127,7 @@ export default function DIY() {
           <WishCard
             yourName={names[0]}
             hisName={names[1]}
-            bgImg={currentTemplate.wishBg}
+            bgImg={currentTemplate?.wishBg}
           />
           {/* canvas生成的图 */}
           <img
