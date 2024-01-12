@@ -4,11 +4,14 @@ import { IMG_INFO } from "@/const/imgInfo";
 import ReactIf from "@/utils/ReactIf";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "umi";
 import "./index.less";
 
 import DragItem from "@/components/DragItem";
+
+const FOOTERS_LIST = new Array(5).fill({});
+
 export default function DIY() {
   const [isPreview, setIsPreview] = useState(false);
   const [mode, setMode] = useState("diy");
@@ -20,9 +23,6 @@ export default function DIY() {
   const [currentTemplate, setCurrentTemplate] = useState({});
   const [size, setSize] = useState({});
   const { search } = useLocation();
-
-  
-
 
   useEffect(() => {
     // const { clientWidth, clientHeight } = dropRef.current;
@@ -54,7 +54,7 @@ export default function DIY() {
   const onTouchEndCb = (data: any) => {
     const newImgs = currentTemplate?.icons?.map?.((img) => {
       if (data.id === img.id) {
-        return { ...img, ...data,style:{...img.style, ...data.style} };
+        return { ...img, ...data, style: { ...img.style, ...data.style } };
       } else {
         return img;
       }
@@ -74,6 +74,16 @@ export default function DIY() {
   const handleTemplateChange = (templateId) => {
     setCurrentTemplate(IMG_INFO.find((item) => item.templateId == templateId));
   };
+
+  // const {diyFooterList,footerImgs} = useMemo(()=>{
+
+  // },[currentTemplate])
+
+  const diyFooters = useMemo(
+    () => currentTemplate?.icons?.filter((item) => item.isFooter) || [],
+    [currentTemplate]
+  );
+
   return (
     <div className="diy-container">
       <div className="header">
@@ -108,13 +118,17 @@ export default function DIY() {
           <img
             src={currentTemplate?.diyBg}
             style={{
-              width:'100%'
+              width: "100%",
               // width: size.width || "auto",
               // height: size.height || "auto",
             }}
           />
 
-          <WishCard yourName={names[0]} hisName={names[1]} bgImg={currentTemplate.wishBg}/>
+          <WishCard
+            yourName={names[0]}
+            hisName={names[1]}
+            bgImg={currentTemplate.wishBg}
+          />
           {/* canvas生成的图 */}
           <img
             src="null"
@@ -140,6 +154,7 @@ export default function DIY() {
                   onTouchEndCb={onTouchEndCb}
                   dropContainer={dropRef.current}
                   droppableId="droppable"
+                  footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
                 />
               ))}
           </ReactIf>
@@ -172,12 +187,14 @@ export default function DIY() {
           </div>
           <div className="footer-imgs">
             <ReactIf condition={mode === "diy"}>
-              {currentTemplate?.icons?.map((item) => (
+              {/* {FOOTERS_LIST} */}
+              {FOOTERS_LIST.map((_, index) => (
                 <div className="footer-item-container">
-                  <ReactIf condition={item.isFooter}>
+                  <ReactIf condition={diyFooters[index]?.isFooter}>
                     <DragItem
-                      key={`footer-${item.id}`}
-                      imgInfo={item}
+                      key={`footer-${diyFooters[index]?.id}`}
+                      imgInfo={diyFooters[index]}
+                      footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
                       getzIndex={() => zIndex.current}
                       onTouchEndCb={onTouchEndCb}
                       dropContainer={dropRef.current}

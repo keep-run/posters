@@ -1,7 +1,14 @@
-import { useEffect, useRef, useCallback } from "react";
+import { Toast } from "antd-mobile";
+import { useCallback, useEffect, useRef } from "react";
 import "./index.less";
 
-const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
+const DragItem = ({
+  onTouchEndCb,
+  imgInfo,
+  getzIndex,
+  droppableId,
+  footerIsOver,
+}: any) => {
   const droppable = useRef<any>(null);
   const getPxToNumber = (str: string) => {
     return Number(str.replace("px", ""));
@@ -17,9 +24,8 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   });
 
   const targetRef = useRef<any>(null);
-  
 
-  const handleTouchMove = useCallback((e: any)=>{
+  const handleTouchMove = useCallback((e: any) => {
     e.stopPropagation();
     e.preventDefault();
     const touch = e.touches[0];
@@ -30,14 +36,16 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
     targetRef.current.style.top = `${y}px`;
     targetRef.current.style.position = `absolute`;
     targetRef.current.style["z-index"] = getzIndex();
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    targetRef.current.addEventListener('touchmove',handleTouchMove,{ passive: false })
-    return ()=>{
-      targetRef.current?.removeEventListener?.('touchmove',handleTouchMove)
-    }
-  },[])
+  useEffect(() => {
+    targetRef.current.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    return () => {
+      targetRef.current?.removeEventListener?.("touchmove", handleTouchMove);
+    };
+  }, []);
   useEffect(() => {
     if (!imgInfo.isFooter && imgInfo.style) {
       targetRef.current.style.left = imgInfo.style.left;
@@ -73,16 +81,30 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       targetRect.bottom < droppableRect.top ||
       targetRect.top > droppableRect.bottom
     ) {
-      targetRef.current.style.position = "";
-      onTouchEndCb({
-        style: {
-          top: 0,
-          left: 0,
-          position: "",
-        },
-        isFooter: true,
-        id: imgInfo.id,
-      });
+      // footer满了 回归原位置
+      if (footerIsOver) {
+        targetRef.current.style.left = imgInfo.style.left;
+        targetRef.current.style.top = imgInfo.style.top;
+        targetRef.current.style.position = imgInfo.style.position;
+        targetRef.current.style.width = imgInfo.style.width;
+        targetRef.current.style.zIndex = getzIndex();
+        Toast.show({
+          content: "底部容器已放满",
+          position: "top",
+        });
+      } else {
+        targetRef.current.style.position = "";
+        onTouchEndCb({
+          style: {
+            top: 0,
+            left: 0,
+            position: "",
+          },
+          isFooter: true,
+          id: imgInfo.id,
+        });
+      }
+
       return;
     }
 
