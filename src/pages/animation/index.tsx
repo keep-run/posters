@@ -18,6 +18,9 @@ import anim7 from '@/assets/animations/icon7.png'
 import anim8 from '@/assets/animations/icon8.png'
 import anim9 from '@/assets/animations/icon9.png'
 import anim10 from '@/assets/animations/icon10.png'
+import anim12 from '@/assets/animations/icon12.png'
+import anim13 from '@/assets/animations/icon13.png'
+import anim14 from '@/assets/animations/icon14.png'
 
 import { useEffect } from "react";
 import { history } from "umi";
@@ -25,7 +28,7 @@ export default () => {
   useEffect(() => {
     setTimeout(() => {
       history.replace("/guide");
-    }, 16000);
+    }, 11000);
   }, []);
   return (
     <div className="anim-container">
@@ -50,7 +53,10 @@ export default () => {
       <img src={text1} alt="" className="text1-img" />
       <img src={text2} alt="" className="text2-img" />
       {/* <VideoPlayer videoSrc={vidioSrc} /> */}
-      <img src={baseImg} alt="" className="base-img"  />
+      {/* 盒子 */}
+      <img src={baseImg} alt="" className="base-img"  />  
+      {/* 盖子 */}
+      <img src={anim12} alt="" className="anim12-img"  />
       <img src={anim1} alt="" className="anim1-img"  />
       <img src={anim2} alt="" className="anim2-img"  />
       <img src={anim3} alt="" className="anim3-img"  />
@@ -59,8 +65,10 @@ export default () => {
       <img src={anim6} alt="" className="anim6-img"  />
       <img src={anim7} alt="" className="anim7-img"  />
       <img src={anim8} alt="" className="anim8-img"  />
-      <img src={anim9} alt="" className="anim9-img" style={{color:'red'}} />
+      <img src={anim9} alt="" className="anim9-img" />
       <img src={anim10} alt="" className="anim10-img"  />
+      <img src={anim13} alt="" className="anim13-img" />
+      <img src={anim14} alt="" className="anim14-img"  />
     </div>
   );
 };
