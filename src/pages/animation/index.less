@@ -12,7 +12,7 @@
 
   .mov-img {
     position: absolute;
-    width: 200px;
+    width: 62%;
     top: 56%;
     bottom: 0;
     animation-name: move;
@@ -104,6 +104,7 @@
     animation-fill-mode: forwards;
     animation-name: baseImg;
     opacity: 0;
+    animation-timing-function: linear;
   }
 
   @keyframes baseImg {
@@ -126,11 +127,12 @@
     top: 55%;
     left: 40%;
     transform: translateX(-50%);
-    animation-duration: 8s;
+    animation-duration: 2s;
     animation-fill-mode: forwards;
     animation-name: anim12Img;
     animation-timing-function: linear;
     transform: rotate(-20deg);
+    animation-delay: 6s;
     opacity: 0;
   }
 

@@ -27,8 +27,8 @@ import { history } from "umi";
 export default () => {
   useEffect(() => {
     setTimeout(() => {
-      history.replace("/guide");
-    }, 11000);
+      // history.replace("/guide");
+    }, 12000);
   }, []);
   return (
     <div className="anim-container">
