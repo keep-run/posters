@@ -21,25 +21,25 @@ import bg from "@/assets/firstPage/bg.png";
 import mov from "@/assets/firstPage/mov.png";
 import text1 from "@/assets/firstPage/text1.png";
 import text2 from "@/assets/firstPage/text2.png";
-import vidioSrc from "@/assets/video/93Z888piCXI3.mp4";
-import VideoPlayer from "@/components/VideoPlayer";
+// import vidioSrc from "@/assets/video/93Z888piCXI3.mp4";
+// import VideoPlayer from "@/components/VideoPlayer";
+import Loading from "@/components/Loading";
 import ReactIf from "@/utils/ReactIf";
 
 import { useEffect, useState } from "react";
-import { history } from "umi";
 export default () => {
-  const [vidioEnd, setVideoEnd] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       // history.replace("/guide");
     }, 12000);
   }, []);
 
-  const onEnded = () => {
-    setVideoEnd(true);
+  const onDone = () => {
+    setLoading(false);
 
     setTimeout(() => {
-      history.replace("/guide");
+      // history.replace("/guide");
     }, 12000);
   };
 
@@ -61,7 +61,7 @@ export default () => {
         }}
       />
 
-      <ReactIf condition={vidioEnd}>
+      <ReactIf condition={!loading}>
         <img src={mov} alt="" className="mov-img" />
 
         <img src={text1} alt="" className="text1-img" />
@@ -84,10 +84,12 @@ export default () => {
         <img src={anim13} alt="" className="anim13-img" />
         <img src={anim14} alt="" className="anim14-img" />
       </ReactIf>
-      <ReactIf condition={!vidioEnd}>
-        <div className="video-wrap">
+      <ReactIf condition={loading}>
+        <Loading onDone={onDone} />
+        {/* <div className="loading-bg">
+          <div className="loading"/>
           <VideoPlayer videoSrc={vidioSrc} onEnded={onEnded} />
-        </div>
+        </div> */}
       </ReactIf>
     </div>
   );
