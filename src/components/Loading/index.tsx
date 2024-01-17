@@ -4,7 +4,7 @@ import "./index.less";
 
 export default ({ onDone }) => {
   useEffect(() => {
-    setTimeout(onDone, 3000);
+    setTimeout(onDone, 2000);
   }, []);
   return (
     <div className="loading-container">
@@ -13,7 +13,7 @@ export default ({ onDone }) => {
           <img src={loadingImg} alt="" className="loading-img"/>
         </div>
       </div>
-      <div className="loading-text">加载中</div>
+      {/* <div className="loading-text">加载中</div> */}
     </div>
   );
 };

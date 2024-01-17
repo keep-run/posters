@@ -40,7 +40,7 @@ export default () => {
 
     setTimeout(() => {
       history.replace("/guide");
-    }, 12000);
+    }, 10000);
   };
 
   return (
