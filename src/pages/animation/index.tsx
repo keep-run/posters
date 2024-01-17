@@ -25,7 +25,7 @@ import text2 from "@/assets/firstPage/text2.png";
 // import VideoPlayer from "@/components/VideoPlayer";
 import Loading from "@/components/Loading";
 import ReactIf from "@/utils/ReactIf";
-
+import { history } from 'umi'
 import { useEffect, useState } from "react";
 export default () => {
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ export default () => {
     setLoading(false);
 
     setTimeout(() => {
-      // history.replace("/guide");
+      history.replace("/guide");
     }, 12000);
   };
 
