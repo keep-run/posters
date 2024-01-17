@@ -52,13 +52,17 @@ export default function DIY() {
   };
 
   const onTouchEndCb = (data: any) => {
-    const newImgs = currentTemplate?.icons?.map?.((img) => {
-      if (data.id === img.id) {
-        return { ...img, ...data, style: { ...img.style, ...data.style } };
-      } else {
-        return img;
-      }
-    });
+    const newImgs = currentTemplate?.icons
+      ?.map?.((img) => {
+        if (data.id === img.id) {
+          return { ...img, ...data, style: { ...img.style, ...data.style } };
+        } else {
+          return img;
+        }
+      })
+      .sort((img1, img2) => (img2.id === data.id ? -1 : 0));
+
+    // console.log("newImgs---", newImgs);
     setCurrentTemplate({ ...currentTemplate, icons: newImgs });
     zIndex.current = zIndex.current + 1;
   };

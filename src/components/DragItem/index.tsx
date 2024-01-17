@@ -82,17 +82,17 @@ const DragItem = ({
       targetRect.top > droppableRect.bottom
     ) {
       // footer满了 回归原位置
-      if (footerIsOver) {
-        targetRef.current.style.left = imgInfo.style.left;
-        targetRef.current.style.top = imgInfo.style.top;
-        targetRef.current.style.position = imgInfo.style.position;
-        targetRef.current.style.width = imgInfo.style.width;
-        targetRef.current.style.zIndex = getzIndex();
-        Toast.show({
-          content: "底部容器已放满",
-          position: "top",
-        });
-      } else {
+      // if (footerIsOver) {
+      //   targetRef.current.style.left = imgInfo.style.left;
+      //   targetRef.current.style.top = imgInfo.style.top;
+      //   targetRef.current.style.position = imgInfo.style.position;
+      //   targetRef.current.style.width = imgInfo.style.width;
+      //   targetRef.current.style.zIndex = getzIndex();
+      //   Toast.show({
+      //     content: "底部容器已放满",
+      //     position: "top",
+      //   });
+      // } else {
         targetRef.current.style.position = "";
         onTouchEndCb({
           style: {
@@ -103,7 +103,7 @@ const DragItem = ({
           isFooter: true,
           id: imgInfo.id,
         });
-      }
+      // }
 
       return;
     }
