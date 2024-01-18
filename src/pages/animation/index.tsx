@@ -5,7 +5,7 @@ import "./index.less";
 // import VideoPlayer from '@/components/VideoPlayer';
 import anim1 from "@/assets/animations/icon1.png";
 import anim10 from "@/assets/animations/icon10.png";
-import baseImg from "@/assets/animations/icon11.png";
+import baseImg from "@/assets/firstPage/baseBox.png";
 import anim12 from "@/assets/animations/icon12.png";
 import anim13 from "@/assets/animations/icon13.png";
 import anim14 from "@/assets/animations/icon14.png";
@@ -31,28 +31,13 @@ export default () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
-      // history.replace("/guide");
-    }, 12000);
-  }, []);
-
-  const onDone = () => {
-    setLoading(false);
-
-    setTimeout(() => {
       history.replace("/guide");
     }, 10000);
-  };
+  }, []);
 
   return (
     <div className="anim-container">
-      {/* <Player
-        autoPlay
-        src={vidioSrc}
-      >
-        <ControlBar autoHide={false} disableDefaultControls={true}>
-          <PlayToggle />
-        </ControlBar>
-      </Player> */}
+ 
       <img
         src={bg}
         alt=""
@@ -61,7 +46,7 @@ export default () => {
         }}
       />
 
-      <ReactIf condition={!loading}>
+    
         <img src={mov} alt="" className="mov-img" />
 
         <img src={text1} alt="" className="text1-img" />
@@ -83,14 +68,7 @@ export default () => {
         <img src={anim10} alt="" className="anim10-img" />
         <img src={anim13} alt="" className="anim13-img" />
         <img src={anim14} alt="" className="anim14-img" />
-      </ReactIf>
-      <ReactIf condition={loading}>
-        <Loading onDone={onDone} />
-        {/* <div className="loading-bg">
-          <div className="loading"/>
-          <VideoPlayer videoSrc={vidioSrc} onEnded={onEnded} />
-        </div> */}
-      </ReactIf>
+    
     </div>
   );
 };

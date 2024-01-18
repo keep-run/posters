@@ -13,7 +13,7 @@ export default ({ onDone }) => {
           <img src={loadingImg} alt="" className="loading-img"/>
         </div>
       </div>
-      {/* <div className="loading-text">加载中</div> */}
+      <div className="loading-text">LOADING ...</div>
     </div>
   );
 };

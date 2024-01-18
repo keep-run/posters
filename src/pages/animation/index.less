@@ -14,28 +14,29 @@
 
   .mov-img {
     position: absolute;
-    width: 62%;
-    top: 56%;
+    // width: 62%;
+    width: 260px;
+    top: 57%;
     bottom: 0;
     animation-name: move;
     animation-duration: 7s;
     animation-fill-mode: forwards;
-    transform: translateX(-50%);
+    // transform: translateX(-50%);
   }
 
   @keyframes move {
     0% {
-      left: -200px;
+      left: -500px;
       opacity: 1
     }
 
-    80% {
-      left: calc(50%);
+    97% {
+      left: calc(50% - 195px);
       opacity: 1
     }
 
     100% {
-      left: calc(50%);
+      left: calc(50% - 195px);
       opacity: 0
     }
   }
@@ -98,8 +99,8 @@
 
   .base-img {
     position: absolute;
-    width: 29%;
-    top: 60%;
+    width: 130px;
+    top: 59%;
     left: 50%;
     transform: translateX(-50%);
     animation-duration: 8s;
