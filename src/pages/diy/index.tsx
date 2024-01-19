@@ -52,15 +52,19 @@ export default function DIY() {
   };
 
   const onTouchEndCb = (data: any) => {
-    const newImgs = currentTemplate?.icons
+    // 从内容区拖拽到底部的，需要放到最后去
+    let toLast = false
+    let newImgs = currentTemplate?.icons
       ?.map?.((img) => {
         if (data.id === img.id) {
+          toLast = (!img.isFooter) && data.isFooter
           return { ...img, ...data, style: { ...img.style, ...data.style } };
         } else {
           return img;
         }
       })
-      .sort((img1, img2) => (img2.id === data.id ? -1 : 0));
+      if(toLast)
+      newImgs = newImgs.sort((img1, img2) => (img2.id === data.id ? -1 : 0));
 
     // console.log("newImgs---", newImgs);
     setCurrentTemplate({ ...currentTemplate, icons: newImgs });
