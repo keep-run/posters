@@ -106,25 +106,12 @@ export default function DIY() {
         style={{
           flexGrow: isPreview ? 0 : 1,
         }}
-        // style={{
-        //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateBg})`
-        // }}
       >
-        <div
-          ref={dropRef}
-          id="droppable"
-          className="droppable"
-          // style={{
-          //   width: size.width || "auto",
-          //   height: size.height || "auto",
-          // }}
-        >
+        <div ref={dropRef} id="droppable" className="droppable">
           <img
             src={currentTemplate?.diyBg}
             style={{
               width: "100%",
-              // width: size.width || "auto",
-              // height: size.height || "auto",
             }}
           />
 
@@ -147,21 +134,22 @@ export default function DIY() {
             }}
           />
 
-          <ReactIf condition={mode === "diy"}>
-            {currentTemplate?.icons
-              ?.filter?.((img) => !img.isFooter)
-              ?.map((item) => (
-                <DragItem
-                  key={`droppable-${item.id}`}
-                  imgInfo={item}
-                  getzIndex={() => zIndex.current}
-                  onTouchEndCb={onTouchEndCb}
-                  dropContainer={dropRef.current}
-                  droppableId="droppable"
-                  footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
-                />
-              ))}
-          </ReactIf>
+          {/* <ReactIf condition={mode === "diy"}> */}
+          {currentTemplate?.icons
+            ?.filter?.((img) => !img.isFooter)
+            ?.map((item) => (
+              <DragItem
+                key={`droppable-${item.id}`}
+                disable = {mode === "template"}
+                imgInfo={item}
+                getzIndex={() => zIndex.current}
+                onTouchEndCb={onTouchEndCb}
+                dropContainer={dropRef.current}
+                droppableId="droppable"
+                footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
+              />
+            ))}
+          {/* </ReactIf> */}
         </div>
       </div>
       <div className="footer-container">
@@ -190,35 +178,42 @@ export default function DIY() {
             </div>
           </div>
           <div className="footer-imgs">
-            <ReactIf condition={mode === "diy"}>
-              {/* {FOOTERS_LIST} */}
-              {FOOTERS_LIST.map((_, index) => (
+            {/* {FOOTERS_LIST} */}
+            {FOOTERS_LIST.map((_, index) => (
+              <>
+                <ReactIf condition={mode === "diy"}>
+                  <div className="footer-item-container">
+                    <ReactIf condition={diyFooters[index]?.isFooter}>
+                      <DragItem
+                        key={`footer-${diyFooters[index]?.id}`}
+                        imgInfo={diyFooters[index]}
+                        footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
+                        getzIndex={() => zIndex.current}
+                        onTouchEndCb={onTouchEndCb}
+                        dropContainer={dropRef.current}
+                        droppableId="droppable"
+                      />
+                    </ReactIf>
+                  </div>
+                </ReactIf>
+
+                {/* 场景模板，展示背景图 */}
+                <ReactIf condition={mode === "template"}>
                 <div className="footer-item-container">
-                  <ReactIf condition={diyFooters[index]?.isFooter}>
-                    <DragItem
-                      key={`footer-${diyFooters[index]?.id}`}
-                      imgInfo={diyFooters[index]}
-                      footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
-                      getzIndex={() => zIndex.current}
-                      onTouchEndCb={onTouchEndCb}
-                      dropContainer={dropRef.current}
-                      droppableId="droppable"
+                <ReactIf condition={IMG_INFO[index]}>
+                    <img
+                      key={index}
+                      src={IMG_INFO[index]?.templateBg}
+                      className="template-img"
+                      onClick={() => handleTemplateChange(IMG_INFO[index]?.templateId)}
+                      // onClick={() => setTemplateBg(item.templateBg)}
                     />
+                 
                   </ReactIf>
                 </div>
-              ))}
-            </ReactIf>
-            <ReactIf condition={mode === "template"}>
-              {IMG_INFO.map((item, index) => (
-                <img
-                  key={index}
-                  src={item.templateBg}
-                  className="template-img"
-                  onClick={() => handleTemplateChange(item.templateId)}
-                  // onClick={() => setTemplateBg(item.templateBg)}
-                />
-              ))}
-            </ReactIf>
+                </ReactIf>
+              </>
+            ))}
           </div>
         </ReactIf>
         <ReactIf condition={isPreview}>

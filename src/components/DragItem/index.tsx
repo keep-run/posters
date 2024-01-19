@@ -1,4 +1,3 @@
-import { Toast } from "antd-mobile";
 import { useCallback, useEffect, useRef } from "react";
 import "./index.less";
 
@@ -7,12 +6,17 @@ const DragItem = ({
   imgInfo,
   getzIndex,
   droppableId,
-  footerIsOver,
+  disable = false,
 }: any) => {
   const droppable = useRef<any>(null);
+  const disableRef = useRef(disable);
   const getPxToNumber = (str: string) => {
     return Number(str.replace("px", ""));
   };
+
+  useEffect(() => {
+    disableRef.current = disable;
+  }, [disable]);
   useEffect(() => {
     droppable.current = document.getElementById(droppableId);
   }, [droppableId]);
@@ -24,8 +28,10 @@ const DragItem = ({
   });
 
   const targetRef = useRef<any>(null);
-
   const handleTouchMove = useCallback((e: any) => {
+    if (disableRef.current) {
+      return;
+    }
     e.stopPropagation();
     e.preventDefault();
     const touch = e.touches[0];
@@ -57,6 +63,9 @@ const DragItem = ({
   }, [imgInfo, targetRef, droppable]);
 
   const onTouchStart = (e: any) => {
+    if (disableRef.current) {
+      return;
+    }
     e.stopPropagation();
     const touch = e.touches[0];
 
@@ -68,6 +77,9 @@ const DragItem = ({
   };
 
   const onTouchEnd = (event: any) => {
+    if (disableRef.current) {
+      return;
+    }
     // document.removeEventListener('touchmove',touchmove,true)
     event.stopPropagation();
     // document.body.style.overflow = "auto";
@@ -93,16 +105,16 @@ const DragItem = ({
       //     position: "top",
       //   });
       // } else {
-        targetRef.current.style.position = "";
-        onTouchEndCb({
-          style: {
-            top: 0,
-            left: 0,
-            position: "",
-          },
-          isFooter: true,
-          id: imgInfo.id,
-        });
+      targetRef.current.style.position = "";
+      onTouchEndCb({
+        style: {
+          top: 0,
+          left: 0,
+          position: "",
+        },
+        isFooter: true,
+        id: imgInfo.id,
+      });
       // }
 
       return;
