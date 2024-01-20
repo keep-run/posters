@@ -31,8 +31,8 @@ export default () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
-      // history.replace("/guide");
-    }, 10000);
+      history.replace("/guide");
+    }, 6000);
   }, []);
 
   return (
