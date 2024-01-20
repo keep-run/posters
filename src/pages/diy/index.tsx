@@ -95,6 +95,7 @@ export default function DIY() {
     [currentTemplate]
   );
 
+ 
   return (
     <div className="diy-container">
       <div className="header">
@@ -202,6 +203,7 @@ export default function DIY() {
                         onTouchEndCb={onTouchEndCb}
                         dropContainer={dropRef.current}
                         droppableId="droppable"
+                        canDelete={false}
                       />
                     </ReactIf>
                   </div>

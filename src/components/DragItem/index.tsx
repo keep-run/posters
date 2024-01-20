@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef } from "react";
+import ReactIf from "@/utils/ReactIf";
+import { CloseOutline } from "antd-mobile-icons";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./index.less";
 
 const DragItem = ({
@@ -7,7 +9,10 @@ const DragItem = ({
   getzIndex,
   droppableId,
   disable = false,
+  onTouchStartCb = () => {},
+  canDelete = true,
 }: any) => {
+  const [focus, setFocus] = useState(false);
   const droppable = useRef<any>(null);
   const disableRef = useRef(disable);
   const getPxToNumber = (str: string) => {
@@ -67,12 +72,15 @@ const DragItem = ({
       return;
     }
     e.stopPropagation();
+
+    targetRef.current.focus?.();
     const touch = e.touches[0];
 
     // touch.clientX  touch.clientY 点击的点距离body可视区的位置；
     const offsetX = touch.clientX - targetRef.current?.offsetLeft;
     const offsetY = touch.pageY - targetRef.current?.offsetTop;
     offset.current = { offsetX, offsetY };
+    onTouchStartCb(imgInfo);
     // document.body.style.overflow = "hidden";
   };
 
@@ -168,17 +176,45 @@ const DragItem = ({
       id: imgInfo.id,
     });
   };
+
+  const hanleDelete = () => {
+    onTouchEndCb({
+      style: {
+        top: 0,
+        left: 0,
+        position: "",
+      },
+      isFooter: true,
+      id: imgInfo.id,
+    });
+  };
+
+  const handleFocus = () => {
+    setFocus(true);
+  };
+
+  const handleBlur = () => {
+    setFocus(false);
+  };
   return (
-    <img
-      src={imgInfo.url}
-      id={imgInfo.id}
+    <div
       onTouchStartCapture={onTouchStart}
       // onTouchMoveCapture={onTouchMove}
       onTouchEndCapture={onTouchEnd}
       onTouchEnd={onTouchEnd}
       ref={targetRef}
       className="drag-item"
-    />
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      tabIndex={-1}
+    >
+      <img src={imgInfo.url} id={imgInfo.id} style={{ width: "100%" }} />
+      <ReactIf condition={focus && canDelete}>
+        <div className="delete" onClick={hanleDelete}>
+          <CloseOutline />
+        </div>
+      </ReactIf>
+    </div>
   );
 };
 
