@@ -83,6 +83,9 @@ export default function DIY() {
     setCurrentTemplate(IMG_INFO.find((item) => item.templateId == templateId));
   };
 
+  const handleWishTextChange = (wishText)=>{
+   setCurrentTemplate({...currentTemplate,wishText:wishText})
+  }
   // const {diyFooterList,footerImgs} = useMemo(()=>{
 
   // },[currentTemplate])
@@ -123,6 +126,9 @@ export default function DIY() {
             yourName={names[0]}
             hisName={names[1]}
             bgImg={currentTemplate?.wishBg}
+            wishText={currentTemplate?.wishText}
+            handleWishTextChange={handleWishTextChange}
+            editAble = {mode === "diy"}
           />
           {/* canvas生成的图 */}
           <img
