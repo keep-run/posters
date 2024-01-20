@@ -11,6 +11,7 @@ export default ({ onDone }) => {
       <div className="loading-bg">
         <div className="loading-progress" >
           <img src={loadingImg} alt="" className="loading-img"/>
+          <div  className="white-line" />
         </div>
       </div>
       <div className="loading-text">LOADING ...</div>
