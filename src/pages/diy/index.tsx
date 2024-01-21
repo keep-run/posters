@@ -200,9 +200,14 @@ export default function DIY() {
             <div
               className="go-prev"
               style={{
-                color: footerStart <= 0 ? "rgb(102,79,80)" : "#FFF",
+                color:
+                  footerStart <= 0 || mode === "template"
+                    ? "rgb(102,79,80)"
+                    : "#FFF",
               }}
-              onClick={() => setFooterStart(Math.max(footerStart - 1, 0))}
+              onClick={() =>
+                mode === "diy" && setFooterStart(Math.max(footerStart - 1, 0))
+              }
             >
               <LeftOutline />
             </div>
@@ -251,11 +256,13 @@ export default function DIY() {
               style={{
                 // opacity: footerStart === diyFooters.length - FOOTER_LENGTH ? 0.8:1
                 color:
-                  footerStart >= diyFooters.length - FOOTER_LENGTH
+                  footerStart >= diyFooters.length - FOOTER_LENGTH ||
+                  mode === "template"
                     ? "rgb(102,79,80)"
                     : "#FFF",
               }}
               onClick={() =>
+                mode === "diy" &&
                 setFooterStart(
                   Math.min(footerStart + 1, diyFooters.length - FOOTER_LENGTH)
                 )
