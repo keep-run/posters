@@ -80,14 +80,30 @@ export const IMG_INFO = [
           width: '17%',
         }
       },
-      // {
-      //   id: "7",
-      //   url: require("@/assets/set1/icon7.png"),
-      //   isFooter: true,
-      //   style: {
-      //     width: '44%',
-      //   }
-      // },
+      {
+        id: "8",
+        url: require("@/assets/set2/icon1.png"),
+        isFooter: true,
+        style: {
+          width: '66%',
+        }
+      },
+      {
+        id: "9",
+        url: require("@/assets/set2/icon2.png"),
+        isFooter: true,
+        style: {
+          width: '44%',
+        }
+      },
+      {
+        id: "10",
+        url: require("@/assets/set1/icon5-1.png"),
+        isFooter: true,
+        style: {
+          width: '20%',
+        }
+      },
     ],
   },
   {
@@ -170,6 +186,30 @@ export const IMG_INFO = [
           width: '35%',
         }
       },
+      {
+        id: "9",
+        url: require("@/assets/set1/icon2.png"),
+        isFooter: true,
+        style: {
+          width: '49%',
+        }
+      },
+      {
+        id: "10",
+        url: require("@/assets/set1/icon3.png"),
+        isFooter: true,
+        style: {
+          width: '60%',
+        }
+      },
+      {
+        id: "11",
+        url: require("@/assets/set1/icon5.png"),
+        isFooter: true,
+        style: {
+          width: '50%',
+        }
+      },
     ],
   },
   {
@@ -239,6 +279,22 @@ export const IMG_INFO = [
         isFooter: true,
         style: {
           width: '50%',
+        }
+      },
+      {
+        id: "8",
+        url: require("@/assets/set1/icon1.png"),
+        isFooter: true,
+        style: {
+          width: '60%',
+        }
+      },
+      {
+        id: "9",
+        url: require("@/assets/set1/icon7.png"),
+        isFooter: true,
+        style: {
+          width: '40%',
         }
       },
     ],

@@ -11,4 +11,5 @@ export default defineConfig({
     { path: "/diy", component: "@/pages/diy/index", layout: false },
   ],
   npmClient: 'cnpm',
+  publicPath: '/posters/'
 });
