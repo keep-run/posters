@@ -241,9 +241,10 @@ export default function DIY() {
                         key={index}
                         src={IMG_INFO[index]?.templateBg}
                         className="template-img"
-                        onClick={() =>
+                        onClick={() =>{
+                          setFooterStart(0)
                           handleTemplateChange(IMG_INFO[index]?.templateId)
-                        }
+                        }}
                         // onClick={() => setTemplateBg(item.templateBg)}
                       />
                     </ReactIf>
@@ -254,7 +255,6 @@ export default function DIY() {
             <div
               className="go-next"
               style={{
-                // opacity: footerStart === diyFooters.length - FOOTER_LENGTH ? 0.8:1
                 color:
                   footerStart >= diyFooters.length - FOOTER_LENGTH ||
                   mode === "template"
