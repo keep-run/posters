@@ -10,6 +10,7 @@ export default defineConfig({
     { path: "/test", component: "@/pages/test/index", layout: false },
     { path: "/diy", component: "@/pages/diy/index", layout: false },
   ],
-  npmClient: 'cnpm',
-  publicPath: '/posters/'
+  npmClient: "cnpm",
+  publicPath: "/posters/",
+  base: "/posters/",
 });
