@@ -1,0 +1,24 @@
+.music-bg {
+  position: absolute;
+  z-index: 999;
+  top: 60px;
+  right: 10px;
+
+  .music-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .playing {
+    animation: rotate 5s infinite linear;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg); /* 从0度开始旋转 */
+    }
+    100% {
+      transform: rotate(360deg); /* 旋转一周（360度） */
+    }
+  }
+}

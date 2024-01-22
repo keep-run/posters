@@ -1,10 +1,11 @@
-import { Link, Outlet } from 'umi';
-import styles from './index.less';
-
+import AudioPlayer from "@/components/AudioPlayer";
+import { Outlet } from "umi";
+import styles from "./index.less";
 export default function Layout() {
   return (
     <div className={styles.navs}>
-      <ul>
+      <AudioPlayer />
+      {/* <ul>
         <li>
           <Link to="/">Home</Link>
         </li>
@@ -14,7 +15,7 @@ export default function Layout() {
         <li>
           <a href="https://github.com/umijs/umi">Github</a>
         </li>
-      </ul>
+      </ul> */}
       <Outlet />
     </div>
   );
