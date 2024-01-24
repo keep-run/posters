@@ -2,13 +2,19 @@ import "@/common/common.less";
 import WishCard from "@/components/WishCard";
 import { IMG_INFO } from "@/const/imgInfo";
 import ReactIf from "@/utils/ReactIf";
+import { LeftOutline, RightOutline } from "antd-mobile-icons";
 import classNames from "classnames";
 import html2canvas from "html2canvas";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "umi";
 import "./index.less";
 
 import DragItem from "@/components/DragItem";
+
+const FOOTER_LENGTH = 5;
+
+const FOOTERS_LIST = new Array(FOOTER_LENGTH).fill({});
+
 export default function DIY() {
   const [isPreview, setIsPreview] = useState(false);
   const [mode, setMode] = useState("diy");
@@ -18,19 +24,16 @@ export default function DIY() {
   const previewRef = useRef(null);
   const [names, setNames] = useState<Array<any>>([]);
   const [currentTemplate, setCurrentTemplate] = useState({});
-  const [size, setSize] = useState({});
+  const [footerStart, setFooterStart] = useState(0);
   const { search } = useLocation();
 
-  // 场景模版
-  const [templateBg, setTemplateBg] = useState("");
-
   useEffect(() => {
-    const { clientWidth, clientHeight } = dropRef.current;
-    const width = 0.5 * clientHeight;
-    setSize({
-      width,
-      height: clientHeight,
-    });
+    // const { clientWidth, clientHeight } = dropRef.current;
+    // const width = 0.5 * clientHeight;
+    // setSize({
+    //   width,
+    //   height: clientHeight,
+    // });
 
     let searchParams = new URLSearchParams(search);
     const templateId = searchParams.get("templateId");
@@ -39,7 +42,7 @@ export default function DIY() {
     setNames([yourName, hisName]);
     const current = IMG_INFO.find((item) => item.templateId == templateId);
     setCurrentTemplate(current);
-    setTemplateBg(current.templateBg);
+    // setTemplateBg(current.templateBg);
   }, []);
 
   const onNext = () => {
@@ -52,13 +55,25 @@ export default function DIY() {
   };
 
   const onTouchEndCb = (data: any) => {
-    const newImgs = currentTemplate?.icons?.map?.((img) => {
+    // 从内容区拖拽到底部的，需要放到最后去
+    let toLast = false;
+    let newImgs = currentTemplate?.icons?.map?.((img) => {
       if (data.id === img.id) {
-        return { ...img, ...data };
+        toLast = !img.isFooter && data.isFooter;
+
+        // 从底部拖到内容区，footer索引减1
+        if (!data.isFooter && img.isFooter) {
+          setFooterStart(Math.max(footerStart - 1, 0));
+        }
+        return { ...img, ...data, style: { ...img.style, ...data.style } };
       } else {
         return img;
       }
     });
+    if (toLast)
+      newImgs = newImgs.sort((img1, img2) => (img2.id === data.id ? -1 : 0));
+
+    // console.log("newImgs---", newImgs);
     setCurrentTemplate({ ...currentTemplate, icons: newImgs });
     zIndex.current = zIndex.current + 1;
   };
@@ -74,6 +89,23 @@ export default function DIY() {
   const handleTemplateChange = (templateId) => {
     setCurrentTemplate(IMG_INFO.find((item) => item.templateId == templateId));
   };
+
+  const handleWishTextChange = (wishText) => {
+    setCurrentTemplate({ ...currentTemplate, wishText: wishText });
+  };
+  // const {diyFooterList,footerImgs} = useMemo(()=>{
+
+  // },[currentTemplate])
+
+  const diyFooters = useMemo(
+    () => currentTemplate?.icons?.filter((item) => item.isFooter) || [],
+    [currentTemplate]
+  );
+
+  const showFooters = useMemo(() => {
+    return diyFooters.slice(footerStart, FOOTER_LENGTH + footerStart);
+  }, [diyFooters, footerStart]);
+
   return (
     <div className="diy-container">
       <div className="header">
@@ -92,28 +124,23 @@ export default function DIY() {
         style={{
           flexGrow: isPreview ? 0 : 1,
         }}
-        // style={{
-        //   backgroundImage: `url(${mode === "diy" ? currentTemplate?.templateBg : templateBg})`
-        // }}
       >
-        <div
-          ref={dropRef}
-          id="droppable"
-          className="droppable"
-          style={{
-            width: size.width || "auto",
-            height: size.height || "auto",
-          }}
-        >
+        <div ref={dropRef} id="droppable" className="droppable">
           <img
-            src={currentTemplate?.templateBg}
+            src={currentTemplate?.diyBg}
             style={{
-              width: size.width || "auto",
-              height: size.height || "auto",
+              width: "100%",
             }}
           />
 
-          <WishCard yourName={names[0]} hisName={names[1]} />
+          <WishCard
+            yourName={names[0]}
+            hisName={names[1]}
+            bgImg={currentTemplate?.wishBg}
+            wishText={currentTemplate?.wishText}
+            handleWishTextChange={handleWishTextChange}
+            editAble={mode === "diy"}
+          />
           {/* canvas生成的图 */}
           <img
             src="null"
@@ -123,25 +150,25 @@ export default function DIY() {
             style={{
               zIndex: zIndex.current + 10,
               display: isPreview ? "flex" : "none",
-              width: size.width || "auto",
-              height: size.height || "auto",
             }}
           />
 
-          <ReactIf condition={mode === "diy"}>
-            {currentTemplate?.icons
-              ?.filter?.((img) => !img.isFooter)
-              ?.map((item) => (
-                <DragItem
-                  key={`droppable-${item.id}`}
-                  imgInfo={item}
-                  getzIndex={() => zIndex.current}
-                  onTouchEndCb={onTouchEndCb}
-                  dropContainer={dropRef.current}
-                  droppableId="droppable"
-                />
-              ))}
-          </ReactIf>
+          {/* <ReactIf condition={mode === "diy"}> */}
+          {currentTemplate?.icons
+            ?.filter?.((img) => !img.isFooter)
+            ?.map((item) => (
+              <DragItem
+                key={`droppable-${item.id}`}
+                disable={mode === "template"}
+                imgInfo={item}
+                getzIndex={() => zIndex.current}
+                onTouchEndCb={onTouchEndCb}
+                dropContainer={dropRef.current}
+                droppableId="droppable"
+                footerIsOver={diyFooters?.length >= FOOTERS_LIST.length}
+              />
+            ))}
+          {/* </ReactIf> */}
         </div>
       </div>
       <div className="footer-container">
@@ -170,33 +197,79 @@ export default function DIY() {
             </div>
           </div>
           <div className="footer-imgs">
-            <ReactIf condition={mode === "diy"}>
-              {currentTemplate?.icons?.map((item) => (
-                <div className="footer-item-container">
-                  <ReactIf condition={item.isFooter}>
-                    <DragItem
-                      key={`footer-${item.id}`}
-                      imgInfo={item}
-                      getzIndex={() => zIndex.current}
-                      onTouchEndCb={onTouchEndCb}
-                      dropContainer={dropRef.current}
-                      droppableId="droppable"
-                    />
-                  </ReactIf>
-                </div>
-              ))}
-            </ReactIf>
-            <ReactIf condition={mode === "template"}>
-              {IMG_INFO.map((item, index) => (
-                <img
-                  key={index}
-                  src={item.templateBg}
-                  className="template-img"
-                  onClick={() => handleTemplateChange(item.templateId)}
-                  // onClick={() => setTemplateBg(item.templateBg)}
-                />
-              ))}
-            </ReactIf>
+            <div
+              className="go-prev"
+              style={{
+                color:
+                  footerStart <= 0 || mode === "template"
+                    ? "rgb(102,79,80)"
+                    : "#FFF",
+              }}
+              onClick={() =>
+                mode === "diy" && setFooterStart(Math.max(footerStart - 1, 0))
+              }
+            >
+              <LeftOutline />
+            </div>
+            {/* {FOOTERS_LIST} */}
+            {FOOTERS_LIST.map((_, index) => (
+              <>
+                <ReactIf condition={mode === "diy"}>
+                  <div className="footer-item-container">
+                    <ReactIf condition={showFooters[index]?.isFooter}>
+                      <DragItem
+                        key={`footer-${showFooters[index]?.id}`}
+                        imgInfo={showFooters[index]}
+                        footerIsOver={
+                          showFooters?.length >= FOOTERS_LIST.length
+                        }
+                        getzIndex={() => zIndex.current}
+                        onTouchEndCb={onTouchEndCb}
+                        dropContainer={dropRef.current}
+                        droppableId="droppable"
+                        canDelete={false}
+                      />
+                    </ReactIf>
+                  </div>
+                </ReactIf>
+
+                {/* 场景模板，展示背景图 */}
+                <ReactIf condition={mode === "template"}>
+                  <div className="footer-item-container">
+                    <ReactIf condition={IMG_INFO[index]}>
+                      <img
+                        key={index}
+                        src={IMG_INFO[index]?.templateBg}
+                        className="template-img"
+                        onClick={() =>{
+                          setFooterStart(0)
+                          handleTemplateChange(IMG_INFO[index]?.templateId)
+                        }}
+                        // onClick={() => setTemplateBg(item.templateBg)}
+                      />
+                    </ReactIf>
+                  </div>
+                </ReactIf>
+              </>
+            ))}
+            <div
+              className="go-next"
+              style={{
+                color:
+                  footerStart >= diyFooters.length - FOOTER_LENGTH ||
+                  mode === "template"
+                    ? "rgb(102,79,80)"
+                    : "#FFF",
+              }}
+              onClick={() =>
+                mode === "diy" &&
+                setFooterStart(
+                  Math.min(footerStart + 1, diyFooters.length - FOOTER_LENGTH)
+                )
+              }
+            >
+              <RightOutline />
+            </div>
           </div>
         </ReactIf>
         <ReactIf condition={isPreview}>
@@ -207,7 +280,6 @@ export default function DIY() {
           </div>
         </ReactIf>
       </div>
-      {/* <Modal visible={showModal} onClose={onClose} onOK={onModalOK} /> */}
     </div>
   );
 }

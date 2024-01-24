@@ -45,6 +45,9 @@ export default () => {
           hisName={names[1]}
           withBtn
           onBtnClick={goDiyPage}
+          bgImg={currentTemplate.wishBg}
+          editAble={false}
+          wishText={currentTemplate?.wishText}
         />
       </ReactIf>
       <Modal visible={showModal} onClose={onClose} onOK={onModalOK} />

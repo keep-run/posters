@@ -1,18 +1,18 @@
-// import vidioSrc from "@/assets/video/93Z888piCXI3.mp4";
+import vidioSrc from "@/assets/video/93Z888piCXI3.mp4";
 import "@/common/common.less";
 // import { ControlBar, Player, PlayToggle } from "video-react";
+import VideoPlayer from "@/components/VideoPlayer";
 import "./index.less";
-// import VideoPlayer from '@/components/VideoPlayer';
-import gif from "@/assets/test.gif";
+// import bg from "@/assets/firstPage/bg.png";
+
 import { useEffect } from "react";
 import { history } from "umi";
-
 export default () => {
-  useEffect(() => {
-    setTimeout(() => {
-      history.replace("/guide");
-    }, 2000);
-  }, []);
+
+
+  const onEnded = () => {
+    history.replace("/anim");
+  };
   return (
     <div className="home-container">
       {/* <Player
@@ -23,8 +23,19 @@ export default () => {
           <PlayToggle />
         </ControlBar>
       </Player> */}
-      <img src={gif} alt="" />
-      {/* <VideoPlayer videoSrc={vidioSrc} /> */}
+      {/* <img
+        src={bg}
+        alt=""
+        style={{
+          width: "100%",
+        }}
+      /> */}
+      <div>
+        <VideoPlayer videoSrc={vidioSrc} onEnded={onEnded} />
+        {/* <Button size='mini' color='primary' onClick={onEnded}>
+            跳过
+          </Button> */}
+      </div>
     </div>
   );
 };

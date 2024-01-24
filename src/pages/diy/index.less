@@ -14,12 +14,12 @@
   }
 
   .action {
-    border: 2px solid gold;
+    border: 2px solid rgb(252,218,151);
     border-radius: 6px;
     text-align: center;
     width: 60px;
     padding: 3px 0;
-    color: gold;
+    color: rgb(252,218,151);
   }
 
   .content {
@@ -53,12 +53,12 @@
   }
 
   .active-mode {
-    color: gold;
+    color: rgb(252,218,151);
   }
 
   .footer-imgs {
     // height: 160px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     display: flex;
     overflow: scroll;
     column-gap: 8px;
@@ -67,18 +67,18 @@
   }
 
   .footer-item-container {
+    overflow: hidden;
     display: flex;
     align-items: center;
     background-color: rgb(33, 33, 33);
     flex-grow: 1;
     flex-basis: 20px;
+    justify-content: center;
   }
 
-  // .template-img {
-  //   width: 80px;
-  //   height: 160px;
-  //   touch-action: none
-  // }
+  .template-img {
+    height: 100%;
+  }
 
   .preview {
     position: absolute;
@@ -126,5 +126,21 @@
     color: gold;
     font-size: 16px;
     margin: 0 10px;
+  }
+
+  .go-prev {
+    // margin-left: -16px;
+    // background-color: rgb(33, 33, 33);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+  }
+
+  .go-next {
+    // margin-right: -16px;
+    // background-color: rgb(33, 33, 33);
+    color: #FFF;
+    display: flex;
+    align-items: center;
   }
 }

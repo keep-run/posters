@@ -1,11 +1,27 @@
-import { useEffect, useRef } from "react";
+import ReactIf from "@/utils/ReactIf";
+import { CloseOutline } from "antd-mobile-icons";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./index.less";
 
-const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
+const DragItem = ({
+  onTouchEndCb,
+  imgInfo,
+  getzIndex,
+  droppableId,
+  disable = false,
+  onTouchStartCb = () => {},
+  canDelete = true,
+}: any) => {
+  const [focus, setFocus] = useState(false);
   const droppable = useRef<any>(null);
+  const disableRef = useRef(disable);
   const getPxToNumber = (str: string) => {
     return Number(str.replace("px", ""));
   };
+
+  useEffect(() => {
+    disableRef.current = disable;
+  }, [disable]);
   useEffect(() => {
     droppable.current = document.getElementById(droppableId);
   }, [droppableId]);
@@ -17,30 +33,12 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
   });
 
   const targetRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (!imgInfo.isFooter && imgInfo.style) {
-      targetRef.current.style.left = imgInfo.style.left;
-      targetRef.current.style.top = imgInfo.style.top;
-      targetRef.current.style.position = imgInfo.style.position;
-      targetRef.current.style.zIndex = getzIndex();
+  const handleTouchMove = useCallback((e: any) => {
+    if (disableRef.current) {
+      return;
     }
-  }, [imgInfo, targetRef, droppable]);
-
-  const onTouchStart = (e: any) => {
     e.stopPropagation();
-    const touch = e.touches[0];
-
-    // touch.clientX  touch.clientY 点击的点距离body可视区的位置；
-    const offsetX = touch.clientX - targetRef.current?.offsetLeft;
-    const offsetY = touch.pageY - targetRef.current?.offsetTop;
-    offset.current = { offsetX, offsetY };
-    document.body.style.overflow = "hidden";
-  };
-
-  const onTouchMove = (e: any) => {
-    e.stopPropagation();
-    e.persist();
+    e.preventDefault();
     const touch = e.touches[0];
     const x = touch.clientX - offset.current.offsetX;
     let y = touch.pageY - offset.current.offsetY;
@@ -49,11 +47,50 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
     targetRef.current.style.top = `${y}px`;
     targetRef.current.style.position = `absolute`;
     targetRef.current.style["z-index"] = getzIndex();
+  }, []);
+
+  useEffect(() => {
+    targetRef.current.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    return () => {
+      targetRef.current?.removeEventListener?.("touchmove", handleTouchMove);
+    };
+  }, []);
+  useEffect(() => {
+    if (!imgInfo.isFooter && imgInfo.style) {
+      targetRef.current.style.left = imgInfo.style.left;
+      targetRef.current.style.top = imgInfo.style.top;
+      targetRef.current.style.position = imgInfo.style.position;
+      targetRef.current.style.width = imgInfo.style.width;
+      targetRef.current.style.zIndex = getzIndex();
+    }
+  }, [imgInfo, targetRef, droppable]);
+
+  const onTouchStart = (e: any) => {
+    if (disableRef.current) {
+      return;
+    }
+    e.stopPropagation();
+
+    targetRef.current.focus?.();
+    const touch = e.touches[0];
+
+    // touch.clientX  touch.clientY 点击的点距离body可视区的位置；
+    const offsetX = touch.clientX - targetRef.current?.offsetLeft;
+    const offsetY = touch.pageY - targetRef.current?.offsetTop;
+    offset.current = { offsetX, offsetY };
+    onTouchStartCb(imgInfo);
+    // document.body.style.overflow = "hidden";
   };
 
   const onTouchEnd = (event: any) => {
+    if (disableRef.current) {
+      return;
+    }
+    // document.removeEventListener('touchmove',touchmove,true)
     event.stopPropagation();
-    document.body.style.overflow = "auto";
+    // document.body.style.overflow = "auto";
     const targetRect = targetRef.current.getBoundingClientRect();
     const droppableRect = droppable.current?.getBoundingClientRect?.() || {};
 
@@ -64,6 +101,18 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       targetRect.bottom < droppableRect.top ||
       targetRect.top > droppableRect.bottom
     ) {
+      // footer满了 回归原位置
+      // if (footerIsOver) {
+      //   targetRef.current.style.left = imgInfo.style.left;
+      //   targetRef.current.style.top = imgInfo.style.top;
+      //   targetRef.current.style.position = imgInfo.style.position;
+      //   targetRef.current.style.width = imgInfo.style.width;
+      //   targetRef.current.style.zIndex = getzIndex();
+      //   Toast.show({
+      //     content: "底部容器已放满",
+      //     position: "top",
+      //   });
+      // } else {
       targetRef.current.style.position = "";
       onTouchEndCb({
         style: {
@@ -74,6 +123,8 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
         isFooter: true,
         id: imgInfo.id,
       });
+      // }
+
       return;
     }
 
@@ -125,17 +176,45 @@ const DragItem = ({ onTouchEndCb, imgInfo, getzIndex, droppableId }: any) => {
       id: imgInfo.id,
     });
   };
+
+  const hanleDelete = () => {
+    onTouchEndCb({
+      style: {
+        top: 0,
+        left: 0,
+        position: "",
+      },
+      isFooter: true,
+      id: imgInfo.id,
+    });
+  };
+
+  const handleFocus = () => {
+    setFocus(true);
+  };
+
+  const handleBlur = () => {
+    setFocus(false);
+  };
   return (
-    <img
-      src={imgInfo.url}
-      id={imgInfo.id}
+    <div
       onTouchStartCapture={onTouchStart}
-      onTouchMoveCapture={onTouchMove}
+      // onTouchMoveCapture={onTouchMove}
       onTouchEndCapture={onTouchEnd}
       onTouchEnd={onTouchEnd}
       ref={targetRef}
       className="drag-item"
-    />
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      tabIndex={-1}
+    >
+      <img src={imgInfo.url} id={imgInfo.id} style={{ width: "100%" }} />
+      <ReactIf condition={focus && canDelete}>
+        <div className="delete" onClick={hanleDelete}>
+          <CloseOutline />
+        </div>
+      </ReactIf>
+    </div>
   );
 };
 

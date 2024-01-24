@@ -1,5 +1,5 @@
 import modalBg from "@/assets/modalBg.png";
-import { Input } from "antd-mobile";
+import { Input, Toast } from "antd-mobile";
 import { useEffect, useRef, useState } from "react";
 import "./index.less";
 
@@ -14,6 +14,16 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
     }
   };
 
+  const handleOK = () => {
+    if (yourName && hisName) {
+      onOK([yourName, hisName]);
+    } else {
+      Toast.show({
+        content: "请完善信息",
+        position: "top",
+      });
+    }
+  };
   useEffect(() => {
     if (!visible) {
       setYourName("");
@@ -24,7 +34,7 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
   return (
     <div
       className="modal"
-      onClick={onMaskClose}
+      // onClick={onMaskClose}
       ref={maskRef}
       style={{
         display: visible ? "flex" : "none",
@@ -46,7 +56,11 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
             "--text-align": "center",
             position: "absolute",
             top: "211px",
+            "--color": "rgb(249,219,164)",
+            "--font-size": "18px",
+            marginLeft: 10,
           }}
+          className="name-input"
         />
 
         <Input
@@ -55,10 +69,14 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
           onChange={(val) => {
             setHisName(val);
           }}
+          className="name-input"
           style={{
             "--text-align": "center",
             position: "absolute",
             top: "291px",
+            "--color": "rgb(249,219,164)",
+            "--font-size": "18px",
+            marginLeft: 10,
           }}
         />
 
@@ -67,9 +85,9 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
             position: "absolute",
             height: 36,
             top: 344,
-            width:'100%'
+            width: "100%",
           }}
-          onClick={()=>onOK([yourName,hisName])}
+          onClick={handleOK}
         />
       </div>
     </div>
@@ -78,34 +96,3 @@ function Modal({ visible = false, onClose = () => {}, onOK = (data) => {} }) {
 
 export default Modal;
 
-// export default ({ visible = false, onClose = () => {} }) => {
-//   const [yourName, setYourName] = useState("");
-//   const [hisName, setHisName] = useState("");
-//   return (
-//     <Mask
-//       visible={visible}
-//       onMaskClick={onClose}
-//       opacity="thick"
-//       className="mask-container"
-//     >
-//       <div
-//         className="modal-content"
-//         style={{
-//           backgroundImage: `url(${Img1})`,
-//         }}
-//       >
-//         <div>填写以下信息</div>
-//         <div>小德帮你搬运祝福</div>
-//         <div>你的姓名</div>
-//         <Input
-//           placeholder=""
-//           value={yourName}
-//           onChange={(val) => {
-//             setYourName(val);
-//           }}
-//         />
-//         <div>获赠人姓名</div>
-//       </div>
-//     </Mask>
-//   );
-// };

@@ -1,4 +1,26 @@
 .drag-item {
   width: 60px;
   // height: fit-content;
+  // position: relative;
+  border: 1px solid transparent ;
+
+  .delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 14px;
+    background-color: rgba(0,0,0,.7);
+    border-radius: 0 0 0 12px;
+    font-size: 8px;
+    color: #FFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:focus {
+    outline: none; /* 去掉聚焦时的外边框 */
+  }
 }
