@@ -5,7 +5,7 @@ export const IMG_INFO = [
     diyBg: require("@/assets/set1/diy-bg.png"),
     // diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/wishBg.png"),
-    wishText: "愿得长如此\n年年物候新",
+    wishText: "龙舞新春，喜气洋洋。\n愿您龙年事业有成，身体健康！",
     icons: [
       {
         id: "1",
@@ -235,7 +235,7 @@ export const IMG_INFO = [
     diyBg: require("@/assets/set2/diy-bg.png"),
     // diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/set2/wish.png"),
-    wishText: "岁岁年年, 共欢同乐\n嘉庆与时新",
+    wishText: "龙腾虎跃，前程似锦。\n 愿您龙年事业跃新阶，家庭喜气旺！",
     icons: [
       {
         id: "1",
@@ -389,7 +389,7 @@ export const IMG_INFO = [
     diyBg: require("@/assets/set3/diy-bg.png"),
     // diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/wishBg.png"),
-    wishText: "日有熹，月有光\n富且昌，寿而康",
+    wishText: "龙年祥瑞，福星照耀。\n愿您龙年吉祥如意，阖家欢乐!",
     icons: [
       {
         id: "1",
