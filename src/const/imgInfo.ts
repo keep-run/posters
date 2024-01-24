@@ -2,7 +2,8 @@ export const IMG_INFO = [
   {
     templateId: 1,
     templateBg: require("@/assets/set1/template.png"),
-    diyBg: require("@/assets/set1/diy-bg.png"),
+    // diyBg: require("@/assets/set1/diy-bg.png"),
+    diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/wishBg.png"),
     wishText: "愿得长如此\n年年物候新",
     icons: [
@@ -162,9 +163,9 @@ export const IMG_INFO = [
         isFooter: true,
         style: {
           width: "20%",
-         
+
         },
-        
+
       },
       {
         id: "17",
@@ -231,7 +232,8 @@ export const IMG_INFO = [
   {
     templateId: 2,
     templateBg: require("@/assets/set2/template.png"),
-    diyBg: require("@/assets/set2/diy-bg.png"),
+    // diyBg: require("@/assets/set2/diy-bg.png"),
+    diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/set2/wish.png"),
     wishText: "岁岁年年, 共欢同乐\n嘉庆与时新",
     icons: [
@@ -384,7 +386,8 @@ export const IMG_INFO = [
   {
     templateId: 3,
     templateBg: require("@/assets/set3/template.png"),
-    diyBg: require("@/assets/set3/diy-bg.png"),
+    // diyBg: require("@/assets/set3/diy-bg.png"),
+    diyBg: require("@/assets/testBg.jpg"),
     wishBg: require("@/assets/wishBg.png"),
     wishText: "日有熹，月有光\n富且昌，寿而康",
     icons: [
